@@ -1,8 +1,12 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
+/**
+ * @def (string) DS - Directory separator.
+ */
+define("DS", "/", true);
+
+/**
+ * @def (resource) BASE_PATH - get a base path.
+ */
+define('BASE_PATH', realpath(dirname(__FILE__)) . DS, true);
