@@ -26,7 +26,8 @@ class Router {
             throw new \InvalidArgumentException("Router::Match did not receive a valid request object");
         }
 
-        if (!$this->autoloader->classExists($req->getController())) {
+        $controllerPath = sprintf("Aggressiveswallow\Controllers\%s", $req->getController());
+        if (!$this->autoloader->classExists($controllerPath)) {
             $msg = sprintf("Controller \"%s\" bestaat niet.", $req->getController());
 
             $t = new Template("errors/Fatal");
@@ -37,9 +38,9 @@ class Router {
             return new Response($t, $t->code);
         }
 
-        $ref = new \ReflectionClass($req->getController());
+        $ref = new \ReflectionClass($controllerPath);
 
-        if (!$ref->isSubclassOf("\PROJ\Controller\BaseController")) {
+        if (!$ref->isSubclassOf("\Aggressiveswallow\Controllers\BaseController")) {
             $msg = sprintf("Controller \"%s\" isn't a valid controller.", $req->getController());
             throw new \Exception($msg);
         }

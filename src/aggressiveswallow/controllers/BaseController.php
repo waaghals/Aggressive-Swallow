@@ -1,6 +1,6 @@
 <?php
 
-namespace Aggressiveswallow\Controller;
+namespace Aggressiveswallow\Controllers;
 use Aggressiveswallow\Exceptions;
 /**
  * Description of baseController

@@ -20,7 +20,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase {
 
     public function testTemplateMagicMethods() {
         $value = "schaap";
-        $t = new Template("Partial" . DS . "BottomJsIncludes");
+        $t = new Template("errors/Fatal");
         $t->blaat = $value;
 
         $this->assertEquals($t->blaat, $value);
