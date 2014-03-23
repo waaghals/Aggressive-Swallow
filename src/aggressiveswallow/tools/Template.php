@@ -1,6 +1,6 @@
 <?php
 
-namespace PROJ\Tools;
+namespace Aggressiveswallow\Tools;
 
 /**
  * Expends the set variables as variables in the loaded viewfile.

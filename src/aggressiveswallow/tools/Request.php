@@ -1,6 +1,6 @@
 <?php
 
-namespace PROJ\Tools;
+namespace Aggressiveswallow\Tools;
 
 /**
  * Parse the uri parts into seperate controllers, actions and parameter

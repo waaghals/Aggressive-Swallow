@@ -1,7 +1,7 @@
 <?php
 
-namespace PROJ\Controller;
-use PROJ\Exceptions;
+namespace Aggressiveswallow\Controller;
+use Aggressiveswallow\Exceptions;
 /**
  * Description of baseController
  *

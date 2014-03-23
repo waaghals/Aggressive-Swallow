@@ -1,7 +1,7 @@
 <?php
 
-namespace PROJ\Tools;
-use PROJ\Exceptions;
+namespace Aggressiveswallow\Tools;
+use Aggressiveswallow\Exceptions;
 /**
  * Splits the uri and calls the correct controller and action
  *
@@ -9,15 +9,20 @@ use PROJ\Exceptions;
  */
 class Router {
 
+    private $includePath;
+    
+    public function setIncludePath(){
+        
+    }
     /**
      * Match the request data agains a controller and invoke the action
-     * @param \PROJ\Tools\Request $req
+     * @param Request $req
      */
-    public static function match($req) {
-        if(!is_a($req, "\PROJ\Tools\Request")){
+    public function match($req) {
+        if(!is_a($req, "Request")){
             throw new \InvalidArgumentException("Router::Match did not receive a valid request object");
         }
-        
+
         $controllerPath = sprintf("PROJ\Controller\%s", $req->getController());
         
         /*
