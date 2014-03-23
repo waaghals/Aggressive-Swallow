@@ -57,7 +57,7 @@ class Request {
     }
 
     public function getController() {
-        return $this->controller . "Controller";
+        return ucfirst($this->controller) . "Controller";
     }
 
     public function getAction() {

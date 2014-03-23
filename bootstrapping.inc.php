@@ -1,5 +1,5 @@
 <?php
-
+use Aggressiveswallow\Tools\Autoloader;
 /**
  * @def (string) DS - Directory separator.
  */
@@ -12,7 +12,7 @@ define('BASE_PATH', realpath(dirname(__FILE__)) . DS, true);
 
 require BASE_PATH . "src" . DS . "aggressiveswallow" . DS . "tools" . DS . "autoloader.php";
 
-$loader = new \Aggressiveswallow\Tools\Autoloader();
+$loader = new Autoloader();
 $loader->setSourceLocation("src");
 $loader->register();
 

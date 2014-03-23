@@ -68,5 +68,9 @@ class Autoloader {
 
         $this->sourceLocation = $sourceLocation . DS;
     }
+    
+    public function classExists($className) {
+        return file_exists($this->getPathForClass($className));
+    }
 
 }

@@ -37,7 +37,14 @@ abstract class BaseController {
         }
 
         //Actually run the method/action
-        return $reflection->invokeArgs($this, $pass);
+        $actionResponse = $reflection->invokeArgs($this, $pass);
+        
+        if (!is_a($actionResponse, "Symfony\Component\HttpFoundation\Response")) {
+            $msg = sprintf("Did not receive a valid response from controller action: %s", $actionName);
+            throw new \Exception($msg);
+        }
+        
+        return $actionResponse;
     }
 
 }

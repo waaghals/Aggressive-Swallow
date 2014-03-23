@@ -1,7 +1,10 @@
 <?php
 
 namespace Aggressiveswallow\Tools;
-use Aggressiveswallow\Exceptions;
+
+use Aggressiveswallow\Tools\Autoloader;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Splits the uri and calls the correct controller and action
  *
@@ -9,45 +12,47 @@ use Aggressiveswallow\Exceptions;
  */
 class Router {
 
-    private $includePath;
+    private $autoloader;
     
-    public function setIncludePath(){
-        
-    }
     /**
      * Match the request data agains a controller and invoke the action
      * @param Request $req
+     * @return Response A response object with correct status code.
+     * 
+     * @throws Exception If the controller is invalid.
      */
-    public function match($req) {
-        if(!is_a($req, "Request")){
+    public function handle($req) {
+        if (!is_a($req, "Aggressiveswallow\Tools\Request")) {
             throw new \InvalidArgumentException("Router::Match did not receive a valid request object");
         }
 
-        $controllerPath = sprintf("PROJ\Controller\%s", $req->getController());
-        
-        /*
-         * can't catch the exception from the ReflectionClass because the
-         * Autoloader tries to load first and fails which already raises
-         * a fatal error.
-         * 
-         * Try to load it ourself first, on failure throw a ServerException
-         * 
-         * Add Classes/ prefix, this is the folder the autoloader works in.
-         */
-         if(!file_exists("Classes/" . $controllerPath . ".php")) {
-               $msg = sprintf("Controller \"%s\" doesn't exists", $req->getController());
-               throw new Exceptions\ServerException($msg, Exceptions\ServerException::NOT_FOUND); 
-         }
-            
-        $ref =  new \ReflectionClass($controllerPath);
+        if (!$this->autoloader->classExists($req->getController())) {
+            $msg = sprintf("Controller \"%s\" bestaat niet.", $req->getController());
 
-        if(!$ref->isSubclassOf("\PROJ\Controller\BaseController")){
-            $msg = sprintf("Controller \"%s\" isn't a valid controller.", $req->getController());
-            throw new Exceptions\ServerException($msg, Exceptions\ServerException::SERVER_ERROR);
+            $t = new Template("errors/Fatal");
+            $t->message = $msg;
+            $t->code = Response::HTTP_NOT_FOUND;
+            $t->type = Response::$statusTexts[$t->code];
+
+            return new Response($t, $t->code);
         }
-        
+
+        $ref = new \ReflectionClass($req->getController());
+
+        if (!$ref->isSubclassOf("\PROJ\Controller\BaseController")) {
+            $msg = sprintf("Controller \"%s\" isn't a valid controller.", $req->getController());
+            throw new \Exception($msg);
+        }
+
         $controller = $ref->newInstance();
-        $controller->callAction($req->getAction(), $req->getArguments());
+        return $controller->callAction($req->getAction(), $req->getArguments());
+    }
+    
+    public function getAutoloader() {
+        return $this->autoloader;
     }
 
+    public function setAutoloader($autoloader) {
+        $this->autoloader = $autoloader;
+    }
 }
