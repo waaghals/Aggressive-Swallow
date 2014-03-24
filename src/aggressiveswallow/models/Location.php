@@ -8,14 +8,8 @@ use Aggressiveswallow\Models\Enums\LocationType;
  *
  * @author Patrick
  */
-class Location {
-    
-    /**
-     *
-     * @var int Price in cents 
-     */
-    private $price;
-    
+class Location extends Product{
+
     /**
      *
      * @var Aggressiveswallow\Models\Enums\LocationType 
@@ -28,22 +22,36 @@ class Location {
      */
     private $address;
     
-    function __construct($price, LocationType $type, Address $address) {
+    function __construct($price, $type, Address $address) {
         if(!is_int($price)){
             throw new \InvalidArgumentException("\$price is not a valid integer.");
         }
         
-        if(!is_a($type, "LocationType")){
+        if(!is_int($type)){
             throw new \InvalidArgumentException("\$type is not a valid LocationType.");
-        }
-        
-        if(!is_a($address, "Address")){
-            throw new \InvalidArgumentException("\$address is not a valid Address.");
         }
         
         $this->price = $price;
         $this->type = $type;
         $this->address = $address;
     }
+
+    public function getType() {
+        return $this->type;
+    }
+
+    public function getAddress() {
+        return $this->address;
+    }
+
+    public function setType(LocationType $type) {
+        $this->type = $type;
+    }
+
+    public function setAddress(Address $address) {
+        $this->address = $address;
+    }
+
+
 
 }

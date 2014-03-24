@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Aggressiveswallow\Models\Enums;
 
 /**
@@ -13,9 +6,7 @@ namespace Aggressiveswallow\Models\Enums;
  *
  * @author Patrick
  */
-class LocationType extends SplEnum {
-    const __default = self::FamilyHouse;
-    
+class LocationType {
     const FamilyHouse = 1;
     const Room = 2;
     const Appartment = 3;
