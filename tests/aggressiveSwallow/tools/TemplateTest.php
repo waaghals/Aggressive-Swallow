@@ -2,7 +2,7 @@
 
 namespace Tests\Tools;
 
-use PROJ\Tools\Template;
+use Aggressiveswallow\Tools\Template;
 
 /**
  * Description of TemplateTest

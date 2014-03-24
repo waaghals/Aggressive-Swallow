@@ -2,7 +2,7 @@
 
 namespace Tests\Tools;
 
-use PROJ\Controller\HomeController;
+use Aggressiveswallow\Controllers\HomeController;
 
 /**
  * Description of Router
