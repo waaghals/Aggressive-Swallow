@@ -13,7 +13,7 @@ abstract class BaseEntity {
      *
      * @var int Primairy field
      */
-    private $id;
+    final private $id;
 
     public function getId() {
         return $this->id;
@@ -30,6 +30,4 @@ abstract class BaseEntity {
         }
         $this->id = $id;
     }
-
-    abstract public function isValid();
 }

@@ -11,7 +11,7 @@ use Aggressiveswallow\EntityPersistanceInterface;
  */
 class DatabaseAddressPersistor
         extends DatabasePersistor
-        implements EntityPersistanceInterface {
+        implements EntityPersistanceInterface{
 
     public function persist($data) {
 
@@ -33,17 +33,77 @@ class DatabaseAddressPersistor
     }
 
     private function insert($data) {
-        $sql = "INSERT INTO `address` (`street` ,`housenumber` ,`city` ,`zipcode`) VALUES (:street,  :housenumber,  :city,  '');";
+        if (is_array($data)) {
+            $this->insertArray($data);
+            return;
+        }
+
+        // Insert it as a object by default
+        $this->insertObject($data);
+    }
+
+    private function insertObject($data) {
+        if (!$data->isValid()) {
+            throw new Exception("Object is not valid");
+        }
+
+        $bindData = array(
+            "street" => $data->getStreet(),
+            "housenumber" => $data->getHouseNumber(),
+            "city" => $data->getCity(),
+            "zipcode" => $data->getZipcode()
+        );
+
+        $this->insertArray($bindData);
+    }
+
+    private function insertArray($data) {
+        $sql = "INSERT INTO `address` (`street`, `housenumber`, `city`, `zipcode`) VALUES (:street, :housenumber, :city, :zipcode)";
+
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute(array('name' => $name, 'description' => $description));
+        $stmt->execute($data);
     }
 
     private function update($data) {
-        
+        if (is_array($data)) {
+            $this->updateArray($data);
+            return;
+        }
+
+        // Insert it as a object by default
+        $this->updateObject($data);
+    }
+
+    private function updateObject($data) {
+        if (!$data->isValid()) {
+            throw new Exception("Object is not valid");
+        }
+
+        $bindData = array(
+            "street" => $data->getStreet(),
+            "housenumber" => $data->getHouseNumber(),
+            "city" => $data->getCity(),
+            "zipcode" => $data->getZipcode()
+        );
+
+        $this->updateArray($bindData);
+    }
+
+    private function updateArray($data) {
+        $sql = "UPDATE 
+                    `address`   
+                SET `street` = :street,
+                    `housenumber` = :housenumber,
+                    `city` = :city,
+                    `zipcode` = :zipcode 
+                 WHERE `id` = :id";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($data);
     }
 
     private function select($key) {
-        
+        die("TODO");
     }
 
 }

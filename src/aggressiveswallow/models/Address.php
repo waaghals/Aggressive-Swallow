@@ -76,5 +76,4 @@ class Address
     public function getFullStreetName() {
         return $this->street . " " . $this->houseNumber;
     }
-
 }
