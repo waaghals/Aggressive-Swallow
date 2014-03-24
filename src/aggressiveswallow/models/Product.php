@@ -13,20 +13,21 @@ namespace Aggressiveswallow\Models;
  *
  * @author Patrick
  */
-class Product {
-    
+class Product
+        extends BaseEntity {
+
     /**
      *
      * @var string Description for the product
      */
     protected $description;
-    
-     /**
+
+    /**
      *
      * @var int Price in cents 
      */
     protected $price;
-    
+
     public function getDescription() {
         return $this->description;
     }
@@ -43,7 +44,4 @@ class Product {
         $this->price = $price;
     }
 
-
-    
-    
 }
