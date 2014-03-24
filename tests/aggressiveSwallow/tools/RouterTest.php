@@ -2,7 +2,7 @@
 
 namespace Tests\Tools;
 
-use PROJ\Tools\Router;
+use Aggressiveswallow\Tools\Router;
 
 /**
  * Description of Router
@@ -21,7 +21,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
     public function testGoodController() {
 
         $existingController = "HomeController";
-        $requestMock = $this->getMock("\PROJ\Tools\Request");
+        $requestMock = $this->getMock("\Aggressiveswallow\Tools\Request");
 
         $requestMock->expects($this->any())
                 ->method("getController")

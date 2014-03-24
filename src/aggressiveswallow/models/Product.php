@@ -1,0 +1,49 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+namespace Aggressiveswallow\Models;
+
+/**
+ * Description of Product
+ *
+ * @author Patrick
+ */
+class Product {
+    
+    /**
+     *
+     * @var string Description for the product
+     */
+    protected $description;
+    
+     /**
+     *
+     * @var int Price in cents 
+     */
+    protected $price;
+    
+    public function getDescription() {
+        return $this->description;
+    }
+
+    public function getPrice() {
+        return $this->price;
+    }
+
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+    public function setPrice($price) {
+        $this->price = $price;
+    }
+
+
+    
+    
+}

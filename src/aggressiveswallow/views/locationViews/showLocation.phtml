@@ -1,0 +1,25 @@
+<?php
+
+use Aggressiveswallow\Tools\Template;
+
+$header = new Template("partials/header");
+$header->pageTitle = $location->getAddress()->getFullStreetName();
+echo $header;
+?>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="thumbnail">
+            <img class="img-responsive" src="http://placehold.it/800x300" alt="">
+            <div class="caption-full">
+                <h4 class="pull-right">&euro;<?php $location->getPrice(); ?></h4>
+                <h4><a href="#"><?php echo $location->getAddress()->getFullStreetName(); ?></a>
+                </h4>
+                <p><?php echo $location->getDescription(); ?></p>
+            </div>
+            <a class="btn btn-primary">Kopen!</a>
+        </div>
+    </div>
+</div>
+<?php
+$footer = new Template("partials/footer");
+echo $footer;
