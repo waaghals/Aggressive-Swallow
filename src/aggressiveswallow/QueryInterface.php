@@ -7,7 +7,6 @@ namespace Aggressiveswallow;
  */
 interface QueryInterface {
     function fetch();
-    function __construct(array $fields);
     function setFields(array $fields);
-    function setField($field);
+    function addField($field);
 }

@@ -9,6 +9,7 @@ use Aggressiveswallow\Models\Address;
 use Aggressiveswallow\Models\Location;
 use Aggressiveswallow\Models\Category;
 use Aggressiveswallow\Repositories\GenericRepository;
+use Aggressiveswallow\Queries\LatestLocationQuery;
 
 /**
  * Description of HomeController
@@ -46,15 +47,30 @@ class HomeController
         ));
         $persistor = new DatabasePersistor($pdo);
         $address = new Address("Street", "13b", "Nijmegen", "6543ZZ");
-        $cat = new Category("Blaat");
+        $cat = new Category("Test");
 
         $loc = new Location(2435, $cat, $address, "Other House");
 
-       
+
         $locRepo = new GenericRepository($persistor);
         $locRepo->create($loc);
 
         $body = sprintf("<pre>%s</pre>", print_r($loc, true));
+        return new Response($body, 200);
+    }
+
+    public function test2Action() {
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
+
+        $persistor = new DatabasePersistor($pdo);
+        $locRepo = new GenericRepository($persistor);
+        $query = new LatestLocationQuery($pdo);
+
+
+        $result = $locRepo->read($query);
+        $body = sprintf("<pre>%s</pre>", print_r($result, true));
         return new Response($body, 200);
     }
 

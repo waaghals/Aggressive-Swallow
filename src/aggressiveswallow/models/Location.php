@@ -24,17 +24,6 @@ class Location
      */
     private $address;
 
-    function __construct($price, Category $category, Address $address, $description) {
-        if (!is_int($price)) {
-            throw new \InvalidArgumentException("\$price is not a valid integer.");
-        }
-
-        $this->price = $price;
-        $this->category = $category;
-        $this->address = $address;
-        $this->description = $description;
-    }
-
     /**
      * 
      * @return Aggressiveswallow\Models\Enums\Category

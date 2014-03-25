@@ -135,7 +135,7 @@ class DatabasePersistor
     private function getTableNameFromObject($object) {
         $reflector = new \ReflectionObject($object);
 
-        return$reflector->getShortName();
+        return $reflector->getShortName();
     }
 
     public function getTableName() {
