@@ -11,17 +11,29 @@ use Aggressiveswallow\EntityPersistanceInterface;
  */
 class DatabaseAddressPersistor
         extends DatabasePersistor
-        implements EntityPersistanceInterface{
+        implements EntityPersistanceInterface {
 
     public function persist($data) {
+        $reflector = new \ReflectionObject($data);
+        $fields = $reflector->getProperties();
+
+
+        foreach ($fields as $field) {
+            $fieldName = $field->getName();
+            $methodName = sprintf("get%s", ucfirst($fieldName));
+            $fieldValue = $reflector->getMethod($methodName)->invoke($data);
+
+            $bindData[$fieldName] = $fieldValue;
+        }
 
         // Does it exists in the database?
         // In others words, does it have an id.
-        if ($data->getId() == null) {
-            $this->insert($data);
+        if (isset($bindData["id"]) && $bindData["id"] != null) {
+            // Id exist
+            $this->update($bindData);
             return;
         }
-        $this->update($data);
+        $this->insert($bindData);
     }
 
     public function retreive($key) {
@@ -33,32 +45,15 @@ class DatabaseAddressPersistor
     }
 
     private function insert($data) {
-        if (is_array($data)) {
-            $this->insertArray($data);
-            return;
-        }
+        $fields = array_keys($data);
+        // build query...
+        $sql = "INSERT INTO table";
 
-        // Insert it as a object by default
-        $this->insertObject($data);
-    }
+        // implode keys of $array...
+        $sql .= " (`" . implode("`, `", $fields) . "`)";
 
-    private function insertObject($data) {
-        if (!$data->isValid()) {
-            throw new Exception("Object is not valid");
-        }
-
-        $bindData = array(
-            "street" => $data->getStreet(),
-            "housenumber" => $data->getHouseNumber(),
-            "city" => $data->getCity(),
-            "zipcode" => $data->getZipcode()
-        );
-
-        $this->insertArray($bindData);
-    }
-
-    private function insertArray($data) {
-        $sql = "INSERT INTO `address` (`street`, `housenumber`, `city`, `zipcode`) VALUES (:street, :housenumber, :city, :zipcode)";
+        // implode values of $array...
+        $sql .= " VALUES (':" . implode("', :'", $fields) . "');";
 
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($data);
@@ -70,7 +65,7 @@ class DatabaseAddressPersistor
             return;
         }
 
-        // Insert it as a object by default
+// Insert it as a object by default
         $this->updateObject($data);
     }
 

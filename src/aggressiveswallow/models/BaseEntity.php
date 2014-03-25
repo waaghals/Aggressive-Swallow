@@ -13,7 +13,7 @@ abstract class BaseEntity {
      *
      * @var int Primairy field
      */
-    final private $id;
+    private static $id;
 
     public function getId() {
         return $this->id;

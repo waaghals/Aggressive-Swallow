@@ -2,9 +2,10 @@
 
 namespace Aggressiveswallow\Controllers;
 
-use Aggressiveswallow\Tools\Responses\ErrorResponse;
 use Aggressiveswallow\Tools\Template;
 use Symfony\Component\HttpFoundation\Response;
+use Aggressiveswallow\Persistors\DatabaseAddressPersistor;
+use Aggressiveswallow\Models\Address;
 
 /**
  * Description of HomeController
@@ -17,23 +18,30 @@ class HomeController
     public function indexAction() {
         $locations = array(
             array(
-                "street" => "Straat 1", 
+                "street" => "Straat 1",
                 "desc" => "Mooi huis"
-                ),
+            ),
             array(
-                "street" => "Straat 2", 
-                "desc" => "Prachtig huis"), 
+                "street" => "Straat 2",
+                "desc" => "Prachtig huis"),
             array(
                 "street" => "Straat 3",
-                "desc" => "Geef huis"), 
+                "desc" => "Geef huis"),
             array(
-                "street" => "Straat 4", 
+                "street" => "Straat 4",
                 "desc" => "Lelijk huis")
-            );
-        
+        );
+
         $t = new Template("homeViews/frontPage");
         $t->locations = $locations;
         return new Response($t, 200);
+    }
+
+    public function testAction() {
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "");
+        $persistor = new DatabaseAddressPersistor($pdo);
+        $address = new Address("straat", "13a", "Arnhem", "6843DX");
+        $persistor->persist($address);
     }
 
 }
