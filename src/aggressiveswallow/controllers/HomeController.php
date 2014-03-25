@@ -46,17 +46,16 @@ class HomeController
         ));
         $persistor = new DatabasePersistor($pdo);
         $address = new Address("Street", "13b", "Nijmegen", "6543ZZ");
-        $cat = new Category("FamilyHouse");
+        $cat = new Category("ParkingSpace");
 
         $loc = new Location(2435, $cat, $address, "Other House");
 
        
         $locRepo = new LocationRepository($persistor);
         $locRepo->create($loc);
-        
-        var_dump($loc);
 
-        return new Response("", 200);
+        $body = sprintf("<pre>%s</pre>", print_r($loc, true));
+        return new Response($body, 200);
     }
 
 }

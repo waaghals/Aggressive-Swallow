@@ -77,7 +77,6 @@ class DatabasePersistor
 
             $bindData[$fieldName] = $fieldValue;
         }
-        var_dump($bindData);
         return $bindData;
     }
 
@@ -92,7 +91,7 @@ class DatabasePersistor
         
         $fields = array_keys($data);
         // build query...
-        $sql = sprintf("INSERT IGNORE INTO `%s` ", $this->tableName);
+        $sql = sprintf("INSERT INTO `%s` ", $this->tableName);
 
         // implode keys of $array...
         $sql .= "(`" . implode("`, `", $fields) . "`)";
@@ -101,9 +100,7 @@ class DatabasePersistor
         $sql .= " VALUES (:" . implode(", :", $fields) . ");";
 
         $stmt = $this->connection->prepare($sql);
-        var_dump($stmt->queryString);
         $stmt->execute($data);
-
     }
 
     /**
