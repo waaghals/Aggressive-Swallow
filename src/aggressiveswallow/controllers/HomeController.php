@@ -68,7 +68,6 @@ class HomeController
         $locRepo = new GenericRepository($persistor);
         $query = new LatestLocationQuery($pdo);
 
-
         $result = $locRepo->read($query);
         $body = sprintf("<pre>%s</pre>", print_r($result, true));
         return new Response($body, 200);
