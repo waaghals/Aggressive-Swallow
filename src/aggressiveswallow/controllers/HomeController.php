@@ -67,7 +67,23 @@ class HomeController
         $persistor = new DatabasePersistor($pdo);
         $locRepo = new GenericRepository($persistor);
         $query = new LatestLocationQuery($pdo);
+        $query->setClassName("Aggressiveswallow\Models\Location");
+        
+        $result = $locRepo->read($query);
+        $body = sprintf("<pre>%s</pre>", print_r($result, true));
+        return new Response($body, 200);
+    }
 
+    public function test3Action() {
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
+
+        $persistor = new DatabasePersistor($pdo);
+        $locRepo = new GenericRepository($persistor);
+        $query = new \Aggressiveswallow\Queries\TreeRootQuery($pdo);
+        $query->setClassName("Aggressiveswallow\Models\Tree");
+        
         $result = $locRepo->read($query);
         $body = sprintf("<pre>%s</pre>", print_r($result, true));
         return new Response($body, 200);

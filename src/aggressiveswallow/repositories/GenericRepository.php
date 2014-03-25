@@ -83,7 +83,7 @@ class GenericRepository
         if (!is_a($query, "Aggressiveswallow\QueryInterface")) {
             throw new Exception("\$query does not implement QueryInterface");
         }
-        $query->setClassName("Aggressiveswallow\Models\Location");
+        
         return $query->fetch();
     }
 

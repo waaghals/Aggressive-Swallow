@@ -15,6 +15,8 @@ class Category
      * @var string Name of the category
      */
     private $name;
+    
+    private $tree;
 
     function __construct($name) {
         $this->setName($name);
@@ -26,6 +28,14 @@ class Category
 
     public function setName($name) {
         $this->name = $name;
+    }
+    
+    public function getTree() {
+        return $this->tree;
+    }
+
+    public function setTree($tree) {
+        $this->tree = $tree;
     }
 
     public function isValid() {
