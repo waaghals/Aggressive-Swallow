@@ -19,4 +19,10 @@ interface PersistanceInterface {
      * @return mixed The data for the key.
      */
     function retreive($key);
+    
+    /**
+     * 
+     * @param mixed $key The key for the data to destroy
+     */
+    function destroy($key);
 }

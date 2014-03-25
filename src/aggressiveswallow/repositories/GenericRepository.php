@@ -2,15 +2,14 @@
 
 namespace Aggressiveswallow\Repositories;
 
-use Aggressiveswallow\Models\BaseEntity;
-use Aggressiveswallow\QueryInterface;
+use Aggressiveswallow\PersistanceInterface;
 
 /**
  * Repository for locations
  *
  * @author Patrick
  */
-class LocationRepository
+class GenericRepository
         extends BaseRepository {
 
     /**
@@ -19,19 +18,13 @@ class LocationRepository
      */
     private $persistor;
 
-    /**
-     *
-     * @var Aggressiveswallow\PersistanceInterface; 
-     */
-    private $locationPersistor;
-
-    public function __construct(\Aggressiveswallow\Persistors\DatabasePersistor $persistor) {
+    public function __construct(PersistanceInterface $persistor) {
         $this->persistor = $persistor;
     }
 
     /**
-     * 
-     * @param mixed $object
+     * Create a new object and persist it.
+     * @param mixed $object to store
      * @return mixed $object with the Id set.
      * @throws \InvalidArgumentException When the object isn't valid
      * @throws \Exception When an unexpected object is in the entity.
@@ -40,7 +33,7 @@ class LocationRepository
         if (!$object->isValid()) {
             throw new \InvalidArgumentException("Location is not valid to be stored.");
         }
-        ///////////////TODO start transaction
+
         $reflector = new \ReflectionObject($object);
         $fields = $reflector->getProperties();
         $bindData = array();
@@ -73,12 +66,15 @@ class LocationRepository
 
         $this->persistor->setTableName($reflector->getShortName());
         $idForObject = $this->persistor->persist($bindData);
+
         $object->setId($idForObject);
         return $object;
     }
 
     public function delete($object) {
-        
+         if($object->getId() == null){
+            throw new Exception("Can't delete \$object because it does not have a Id (PKey)");
+        }
     }
 
     public function read($query) {
@@ -88,7 +84,13 @@ class LocationRepository
     }
 
     public function update($object) {
+        if($object->getId() == null){
+            throw new Exception("Can't update \$object because does not have a Id (PKey)");
+        }
         
+        // Because create works recursively it has to work with existing id's as well
+        // Use a create to update the object.
+        return $this->create($object);
     }
 
 }

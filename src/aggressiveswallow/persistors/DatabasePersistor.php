@@ -40,7 +40,7 @@ class DatabasePersistor
 
     public function persist($data) {
         $this->entityData = $data;
-        
+
         // Does it exists in the database?
         // In others words, does it have an id.
         if (isset($this->entityData["id"]) && $this->entityData["id"] != null) {
@@ -84,11 +84,11 @@ class DatabasePersistor
      * Insert the entityData in the database
      */
     private function insert() {
-        
+
         // Don't need the id now, remove it from the entityData
         $data = $this->entityData;
         unset($data['id']);
-        
+
         $fields = array_keys($data);
         // build query...
         $sql = sprintf("INSERT INTO `%s` ", $this->tableName);
@@ -134,10 +134,10 @@ class DatabasePersistor
      */
     private function getTableNameFromObject($object) {
         $reflector = new \ReflectionObject($object);
-        
+
         return$reflector->getShortName();
     }
-    
+
     public function getTableName() {
         return $this->tableName;
     }
@@ -146,6 +146,31 @@ class DatabasePersistor
         $this->tableName = $tableName;
     }
 
+    /**
+     * 
+     * @return \PDO
+     */
+    public function getConnection() {
+        return $this->connection;
+    }
 
+    /**
+     * 
+     * @param \PDO $connection
+     */
+    public function setConnection(\PDO $connection) {
+        $this->connection = $connection;
+    }
+
+    public function destroy($key) {
+        if(!is_int($key)){
+            throw new Exception("Could not destroy data with \$key because \$key isn't an int.");
+        }
+        
+        $sql = sprintf("DELETE FROM `%s` WHERE `id` = :id", $this->tableName);
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(":id", $key);
+        $stmt->execute();
+    }
 
 }

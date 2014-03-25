@@ -8,7 +8,7 @@ use Aggressiveswallow\Persistors\DatabasePersistor;
 use Aggressiveswallow\Models\Address;
 use Aggressiveswallow\Models\Location;
 use Aggressiveswallow\Models\Category;
-use Aggressiveswallow\Repositories\LocationRepository;
+use Aggressiveswallow\Repositories\GenericRepository;
 
 /**
  * Description of HomeController
@@ -46,12 +46,12 @@ class HomeController
         ));
         $persistor = new DatabasePersistor($pdo);
         $address = new Address("Street", "13b", "Nijmegen", "6543ZZ");
-        $cat = new Category("ParkingSpace");
+        $cat = new Category("Blaat");
 
         $loc = new Location(2435, $cat, $address, "Other House");
 
        
-        $locRepo = new LocationRepository($persistor);
+        $locRepo = new GenericRepository($persistor);
         $locRepo->create($loc);
 
         $body = sprintf("<pre>%s</pre>", print_r($loc, true));
