@@ -10,6 +10,7 @@ use Aggressiveswallow\Models\Location;
 use Aggressiveswallow\Models\Category;
 use Aggressiveswallow\Repositories\GenericRepository;
 use Aggressiveswallow\Queries\LatestLocationQuery;
+use Aggressiveswallow\Queries\FullTreeQuery;
 
 /**
  * Description of HomeController
@@ -81,11 +82,16 @@ class HomeController
 
         $persistor = new DatabasePersistor($pdo);
         $locRepo = new GenericRepository($persistor);
-        $query = new \Aggressiveswallow\Queries\TreeRootQuery($pdo);
+        $query = new FullTreeQuery($pdo);
         $query->setClassName("Aggressiveswallow\Models\Tree");
         
-        $result = $locRepo->read($query);
-        $body = sprintf("<pre>%s</pre>", print_r($result, true));
+        $results = $locRepo->read($query);
+        $body = "<pre>";
+        foreach ($results as $result) {
+            $body .= $result->name . "\n";
+        }
+        $body .= "</pre>";
+        //$body = sprintf("<pre>%s</pre>", print_r($result, true));
         return new Response($body, 200);
     }
 

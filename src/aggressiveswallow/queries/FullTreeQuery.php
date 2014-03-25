@@ -25,8 +25,15 @@ class FullTreeQuery
         
 
         $this->condition = sprintf("HAVING `lft` BETWEEN %s AND %s ORDER BY `lft` ASC", $treeLimits->min, $treeLimits->max);
-        $sql = sprintf("SELECT %s FROM `%s` %s", $this->fields(), $this->table, $this->condition);
-        $stmt = $this->connection->prepare($sql);
+        
+        $sql2 = "SELECT CONCAT( REPEAT(' ', COUNT(parent.id) - 1), node.id) AS name
+FROM tree AS node,
+        tree AS parent
+WHERE node.lft BETWEEN parent.lft AND parent.rgt
+GROUP BY node.id
+ORDER BY node.lft";
+        //$sql = sprintf("SELECT %s FROM `%s` %s", $this->fields(), $this->table, $this->condition);
+        $stmt = $this->connection->prepare($sql2);
 
         $stmt->execute();
 
