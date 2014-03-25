@@ -44,4 +44,8 @@ class Product
         $this->price = $price;
     }
 
+    public function isValid() {
+        return ($this->price > 0) && (strlen($this->description) > 5);
+    }
+
 }

@@ -13,7 +13,7 @@ abstract class BaseEntity {
      *
      * @var int Primairy field
      */
-    protected static $id;
+    protected $id;
 
     public function getId() {
         return $this->id;
@@ -28,6 +28,21 @@ abstract class BaseEntity {
         if (!is_int($id)) {
             throw new \InvalidArgumentException("Not a valid Id was passed to setId on BaseEntity");
         }
+
+        if ($this->id === $id) {
+            return;
+        }
+
+        if (!$this->id == null) {
+            throw new \Exception("Id can be set only once.");
+        }
+
         $this->id = $id;
     }
+
+    public function __toString() {
+        return (string) $this->getId();
+    }
+
+    abstract function isValid();
 }

@@ -8,8 +8,8 @@ use Aggressiveswallow\Models\BaseEntity;
  * @author Patrick
  */
 interface RepositoryInterface {
-    function create(BaseEntity$object);
-    function read(QueryInterface $query);
-    function update(BaseEntity $object);
-    function delete(BaseEntity $object);
+    function create($object);
+    function read($query);
+    function update($object);
+    function delete($object);
 }

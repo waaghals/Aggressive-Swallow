@@ -4,8 +4,11 @@ namespace Aggressiveswallow\Controllers;
 
 use Aggressiveswallow\Tools\Template;
 use Symfony\Component\HttpFoundation\Response;
-use Aggressiveswallow\Persistors\DatabaseAddressPersistor;
+use Aggressiveswallow\Persistors\DatabasePersistor;
 use Aggressiveswallow\Models\Address;
+use Aggressiveswallow\Models\Location;
+use Aggressiveswallow\Models\Category;
+use Aggressiveswallow\Repositories\LocationRepository;
 
 /**
  * Description of HomeController
@@ -38,13 +41,21 @@ class HomeController
     }
 
     public function testAction() {
-        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "");
-        $persistor = new DatabaseAddressPersistor($pdo);
-        $address = new Address("update", "13a", "Arnhem", "6843DX");
-        $address->setId(14);
-        var_dump($address);
-        $persistor->persist($address);
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
+        $persistor = new DatabasePersistor($pdo);
+        $address = new Address("Street", "13b", "Nijmegen", "6543ZZ");
+        $cat = new Category("FamilyHouse");
+
+        $loc = new Location(2435, $cat, $address, "Other House");
+
+       
+        $locRepo = new LocationRepository($persistor);
+        $locRepo->create($loc);
         
+        var_dump($loc);
+
         return new Response("", 200);
     }
 

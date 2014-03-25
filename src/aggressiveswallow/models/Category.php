@@ -1,13 +1,14 @@
 <?php
 
-namespace Aggressiveswallow\Models\Enums;
+namespace Aggressiveswallow\Models;
 
 /**
  * Category enums from the database.
  *
  * @author Patrick
  */
-class Category {
+class Category
+        extends BaseEntity {
 
     /**
      *
@@ -25,6 +26,10 @@ class Category {
 
     public function setName($name) {
         $this->name = $name;
+    }
+
+    public function isValid() {
+        return strlen($this->name) > 1;
     }
 
 }
