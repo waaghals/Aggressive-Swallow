@@ -1,4 +1,5 @@
 <?php
+
 namespace Aggressiveswallow\Models;
 
 /**
@@ -6,32 +7,33 @@ namespace Aggressiveswallow\Models;
  *
  * @author Patrick
  */
-class Address {
-    
+class Address
+        extends BaseEntity {
+
     /**
      *
      * @var string Street name of object
      */
     private $street;
-    
+
     /**
      *
      * @var string House number including the additive
      */
     private $houseNumber;
-    
+
     /**
      *
      * @var string Name of the city or village.
      */
     private $city;
-    
+
     /**
      *
      * @var string The zipcode for the location
      */
     private $zipcode;
-    
+
     function __construct($street, $houseNumber, $city, $zipcode) {
         $this->street = $street;
         $this->houseNumber = $houseNumber;
@@ -75,5 +77,8 @@ class Address {
         return $this->street . " " . $this->houseNumber;
     }
 
-    
+    public function isValid() {
+        return true;
+    }
+
 }
