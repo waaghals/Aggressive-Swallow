@@ -40,8 +40,12 @@ class HomeController
     public function testAction() {
         $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "");
         $persistor = new DatabaseAddressPersistor($pdo);
-        $address = new Address("straat", "13a", "Arnhem", "6843DX");
+        $address = new Address("update", "13a", "Arnhem", "6843DX");
+        $address->setId(14);
+        var_dump($address);
         $persistor->persist($address);
+        
+        return new Response("", 200);
     }
 
 }
