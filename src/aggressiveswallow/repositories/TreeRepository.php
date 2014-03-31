@@ -28,10 +28,9 @@ class TreeRepository
 
     public function create(BaseEntity $object) {
         if (!is_a($object, "\Aggressiveswallow\Models\Tree")) {
-            throw new Exception("Not a valid `Tree` object given.");
+            throw new \Exception("Not a valid `Tree` object given.");
         }
 
-        var_dump($object->getLft());
         $this->addQuery->setId($object->getLft());
         $this->addQuery->run();
         parent::create($object);

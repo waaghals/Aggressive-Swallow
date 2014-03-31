@@ -28,10 +28,6 @@ class MenuItem
      */
     private $tree;
 
-    function __construct($name) {
-        $this->setName($name);
-    }
-
     public function getName() {
         return $this->name;
     }

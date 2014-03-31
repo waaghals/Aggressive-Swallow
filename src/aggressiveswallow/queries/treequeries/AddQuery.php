@@ -20,8 +20,8 @@ class AddQuery
     public function run() {
         $stmtLft = $this->connection->prepare(TreeQuery::ADD_LEFT);
         $stmtRgt = $this->connection->prepare(TreeQuery::ADD_RIGHT);
-        var_dump($stmtLft->execute(array("id" => $this->id)));
-        var_dump($stmtRgt->execute(array("id" => $this->id)));
+        $stmtLft->execute(array("id" => $this->id));
+        $stmtRgt->execute(array("id" => $this->id));
     }
 
 }
