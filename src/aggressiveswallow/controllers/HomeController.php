@@ -32,13 +32,28 @@ class HomeController
             ),
             array(
                 "street" => "Straat 2",
-                "desc" => "Prachtig huis"),
+                "desc" => "Prachtig huis"
+            ),
             array(
                 "street" => "Straat 3",
-                "desc" => "Geef huis"),
+                "desc" => "Geef huis"
+            ),
+            array(
+                "street" => "Straat 3",
+                "desc" => "Geef huis"
+            ),
+            array(
+                "street" => "Straat 3",
+                "desc" => "Geef huis"
+            ),
+            array(
+                "street" => "Straat 3",
+                "desc" => "Geef huis"
+            ),
             array(
                 "street" => "Straat 4",
-                "desc" => "Lelijk huis")
+                "desc" => "Lelijk huis"
+            )
         );
 
         $t = new Template("homeViews/frontPage");
@@ -120,7 +135,7 @@ class HomeController
                 $body .="<<";
                 $newNode = new Tree();
                 $newNode->setParent($result);
-                
+
                 var_dump($repo->create($newNode));
             }
 
