@@ -30,19 +30,18 @@ class TreeRepository
         if (!is_a($object, "\Aggressiveswallow\Models\Tree")) {
             throw new \Exception("Not a valid `Tree` object given.");
         }
-
-        $this->addQuery->setId($object->getLft());
+        $this->addQuery->setLeft($object->getLft());
         $this->addQuery->run();
         parent::create($object);
         return $object;
     }
 
     public function delete(BaseEntity $object) {
-        $rgt = $object->getRgt();
-
-        $this->subtractQuery->setId($rgt);
-        $this->subtractQuery->run();
+        $this->subtractQuery->setLeft($object->getLft());
+        $this->subtractQuery->setRigth($object->getRgt());
+        
         parent::delete($object);
+        $this->subtractQuery->run();
     }
 
     public function update(BaseEntity $object) {

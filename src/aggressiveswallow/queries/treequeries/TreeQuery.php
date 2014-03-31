@@ -9,13 +9,6 @@ namespace Aggressiveswallow\Queries\Treequeries;
  */
 abstract class TreeQuery {
 
-    const ADD_LEFT = "UPDATE `tree` SET `lft` = `lft` + 2 WHERE `lft` > :id";
-    const ADD_RIGHT = "UPDATE `tree` SET `rgt` = `rgt` + 2 WHERE `rgt` >= :id";
-    const SUB_LEFT = "UPDATE `tree` SET `lft` = `lft` - 2 WHERE `lft` > :id";
-    const SUB_RIGHT = "UPDATE `tree` SET `rgt` = `rgt` - 2 WHERE `rgy` >= :id";
-
-    protected $id;
-
     /**
      *
      * @var \PDO

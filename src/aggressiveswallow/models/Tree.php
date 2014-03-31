@@ -1,4 +1,5 @@
 <?php
+
 namespace Aggressiveswallow\Models;
 
 /**
@@ -8,23 +9,23 @@ namespace Aggressiveswallow\Models;
  */
 class Tree
         extends BaseEntity {
-    
+
     /**
      *
      * @var int id of the left
      */
     private $lft;
-    
+
     /**
      *
      * @var int id of the right
      */
     private $rgt;
-    
+
     public function isValid() {
         return true;
     }
-    
+
     /**
      * 
      * @return int
@@ -62,10 +63,8 @@ class Tree
      * @param \Aggressiveswallow\Models\Aggressiveswallow\Models\Tree $parent
      */
     public function setParent(Tree $parent) {
-        $this->lft = $parent->getRgt();
-        $this->rgt = $parent->getRgt() + 1;
+        $this->lft = $parent->getLft() + 1;
+        $this->rgt = $parent->getLft() + 2;
     }
-
-
 
 }

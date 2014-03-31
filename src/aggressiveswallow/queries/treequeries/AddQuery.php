@@ -13,15 +13,24 @@ use Aggressiveswallow\Queries\Treequeries\TreeQuery;
 class AddQuery
         extends TreeQuery
         implements RunQueryInterface {
-    
+
+    const LEFT = "UPDATE `tree` SET `lft` = `lft` + 2 WHERE `lft` > :left";
+    const RIGHT = "UPDATE `tree` SET `rgt` = `rgt` + 2 WHERE `rgt` > :left";
+
+    private $left;
+
     /**
      * Add 2 from every node where the fieldname is larger than the supplied id;
      */
     public function run() {
-        $stmtLft = $this->connection->prepare(TreeQuery::ADD_LEFT);
-        $stmtRgt = $this->connection->prepare(TreeQuery::ADD_RIGHT);
-        $stmtLft->execute(array("id" => $this->id));
-        $stmtRgt->execute(array("id" => $this->id));
+        $stmtLft = $this->connection->prepare(AddQuery::LEFT);
+        $stmtRgt = $this->connection->prepare(AddQuery::RIGHT);
+        $stmtLft->execute(array("left" => $this->left));
+        $stmtRgt->execute(array("left" => $this->left));
+    }
+
+    public function setLeft($left) {
+        $this->left = $left;
     }
 
 }
