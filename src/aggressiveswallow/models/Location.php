@@ -26,7 +26,7 @@ class Location
 
     /**
      * 
-     * @return Aggressiveswallow\Models\Enums\Category
+     * @return Aggressiveswallow\Models\Category
      */
     public function getCategory() {
         return $this->category;
@@ -42,7 +42,7 @@ class Location
 
     /**
      * 
-     * @param \Aggressiveswallow\Models\Enums\Category $category
+     * @param \Aggressiveswallow\Models\Category $category
      */
     public function setCategory(Category $category) {
         $this->category = $category;
