@@ -8,9 +8,13 @@ use Aggressiveswallow\Persistors\DatabasePersistor;
 use Aggressiveswallow\Models\Address;
 use Aggressiveswallow\Models\Location;
 use Aggressiveswallow\Models\Category;
+use Aggressiveswallow\Models\Tree;
 use Aggressiveswallow\Repositories\GenericRepository;
+use Aggressiveswallow\Repositories\TreeRepository;
 use Aggressiveswallow\Queries\LatestLocationQuery;
 use Aggressiveswallow\Queries\FullTreeQuery;
+use Aggressiveswallow\Queries\Treequeries\AddQuery;
+use Aggressiveswallow\Queries\Treequeries\SubtractQuery;
 
 /**
  * Description of HomeController
@@ -69,7 +73,7 @@ class HomeController
         $locRepo = new GenericRepository($persistor);
         $query = new LatestLocationQuery($pdo);
         $query->setClassName("Aggressiveswallow\Models\Location");
-        
+
         $result = $locRepo->read($query);
         $body = sprintf("<pre>%s</pre>", print_r($result, true));
         return new Response($body, 200);
@@ -84,11 +88,43 @@ class HomeController
         $locRepo = new GenericRepository($persistor);
         $query = new FullTreeQuery($pdo);
         $query->setClassName("Aggressiveswallow\Models\Tree");
-        
+
         $results = $locRepo->read($query);
         $body = "<pre>";
         foreach ($results as $result) {
             $body .= $result->name . "\n";
+        }
+        $body .= "</pre>";
+        //$body = sprintf("<pre>%s</pre>", print_r($result, true));
+        return new Response($body, 200);
+    }
+
+    public function test4Action() {
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
+
+        $persistor = new DatabasePersistor($pdo);
+        $repo = new TreeRepository($persistor);
+        $repo->setQueries(new AddQuery($pdo), new SubtractQuery($pdo));
+        $query = new FullTreeQuery($pdo);
+        $query->setClassName("Aggressiveswallow\Models\Tree");
+
+        $results = $repo->read($query);
+        $body = "<pre>";
+        foreach ($results as $result) {
+            $body .= $result->name;
+
+
+            if ($result->name == 17) {
+                $body .="<<";
+                $newNode = new Tree();
+                $newNode->setParent($result);
+                
+                var_dump($repo->create($newNode));
+            }
+
+            $body .= "\n";
         }
         $body .= "</pre>";
         //$body = sprintf("<pre>%s</pre>", print_r($result, true));

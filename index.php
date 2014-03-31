@@ -13,13 +13,23 @@ try {
     $request = new Request();
     $router = new Router();
     $router->setAutoloader($loader);
-    
+
     $response = $router->handle($request);
     $response->send();
-
 } catch (Exception $e) {
     $t = new Template("errors/Fatal");
-    $t->message = $e->getMessage();
+    $msg = sprintf("Message: %s<br />Line: %s<br />File: %s<br /><br />", $e->getMessage(), $e->getLine(), $e->getFile());
+    $msg .= str_repeat(">", 15);
+    $msg .= " Trace ";
+    $msg .= str_repeat(">", 15);
+    $msg .= "<br />";
+
+    $i = 0;
+    foreach ($e->getTrace() as $trace) {
+        $msg .= sprintf("%s. <strong>%s</strong>::%s <i>(%s)</i><br />", $i, $trace["class"], $trace["function"], @$trace["line"]);
+        $i++;
+    }
+    $t->message = $msg;
     $t->code = Response::HTTP_INTERNAL_SERVER_ERROR;
     $t->type = Response::$statusTexts[$t->code];
 

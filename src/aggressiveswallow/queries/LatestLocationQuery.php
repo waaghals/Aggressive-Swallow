@@ -2,7 +2,7 @@
 
 namespace Aggressiveswallow\Queries;
 
-use Aggressiveswallow\QueryInterface;
+use Aggressiveswallow\ResultQueryInterface;
 
 /**
  * Query the latest locations.
@@ -11,7 +11,7 @@ use Aggressiveswallow\QueryInterface;
  */
 class LatestLocationQuery
         extends BaseQuery
-        implements QueryInterface {
+        implements ResultQueryInterfaceerface {
 
     public function fetch() {
 
@@ -26,4 +26,5 @@ class LatestLocationQuery
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className);
     }
+
 }

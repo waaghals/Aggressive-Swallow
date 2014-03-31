@@ -26,7 +26,7 @@ class FullTreeQuery
 
         $this->condition = sprintf("HAVING `lft` BETWEEN %s AND %s ORDER BY `lft` ASC", $treeLimits->min, $treeLimits->max);
         
-        $sql2 = "SELECT CONCAT( REPEAT(' ', COUNT(parent.id) - 1), node.id) AS name
+        $sql2 = "SELECT CONCAT( REPEAT(' ', COUNT(parent.id) - 1), node.id) AS name, node.id, node.lft, node.rgt
 FROM tree AS node,
         tree AS parent
 WHERE node.lft BETWEEN parent.lft AND parent.rgt

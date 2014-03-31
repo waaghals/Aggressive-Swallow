@@ -164,7 +164,7 @@ class DatabasePersistor
 
     public function destroy($key) {
         if(!is_int($key)){
-            throw new Exception("Could not destroy data with \$key because \$key isn't an int.");
+            throw new \Exception("Could not destroy data with \$key because \$key isn't an int.");
         }
         
         $sql = sprintf("DELETE FROM `%s` WHERE `id` = :id", $this->tableName);

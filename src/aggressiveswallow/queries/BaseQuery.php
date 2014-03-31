@@ -2,7 +2,7 @@
 
 namespace Aggressiveswallow\Queries;
 
-use Aggressiveswallow\QueryInterface;
+use Aggressiveswallow\ResultQueryInterface;
 
 /**
  * Query the latest locations.
@@ -10,7 +10,7 @@ use Aggressiveswallow\QueryInterface;
  * @author Patrick
  */
 abstract class BaseQuery
-        implements QueryInterface {
+        implements ResultQueryInterface {
 
     /**
      *
@@ -23,7 +23,7 @@ abstract class BaseQuery
      * @var string Table name where to select from.
      */
     protected $table;
-    
+
     /**
      *
      * @var string ClassName to Hydrate the data into.
@@ -85,6 +85,7 @@ abstract class BaseQuery
             addField($field);
         }
     }
+
     public function getCondition() {
         return $this->condition;
     }
@@ -92,7 +93,7 @@ abstract class BaseQuery
     public function setCondition($condition) {
         $this->condition = $condition;
     }
-    
+
     public function getClassName() {
         return $this->className;
     }
@@ -102,7 +103,5 @@ abstract class BaseQuery
         $this->table = $reflectionClass->getShortName();
         $this->className = $className;
     }
-
-
 
 }
