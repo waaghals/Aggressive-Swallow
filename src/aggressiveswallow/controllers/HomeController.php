@@ -15,6 +15,9 @@ use Aggressiveswallow\Queries\LatestLocationQuery;
 use Aggressiveswallow\Queries\FullTreeQuery;
 use Aggressiveswallow\Queries\Treequeries\AddQuery;
 use Aggressiveswallow\Queries\Treequeries\SubtractQuery;
+use Aggressiveswallow\Queries\NavigationQuery;
+use Aggressiveswallow\Factories\NavItemFactory;
+use Aggressiveswallow\Factories\MenuItemFactory;
 
 /**
  * Description of HomeController
@@ -146,4 +149,16 @@ class HomeController
         return new Response($body, 200);
     }
 
+    public function test5Action() {
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
+
+        $persistor = new DatabasePersistor($pdo);
+        $repo = new GenericRepository($persistor);
+        $navTree = $repo->read(new NavigationQuery($pdo, new NavItemFactory(new MenuItemFactory())));
+
+        $body = sprintf("<pre>%s</pre>", print_r($navTree, true));
+        return new Response($body, Response::HTTP_OK);
+    }
 }

@@ -108,7 +108,7 @@ class CreateController
           $genericRepo->create($account);
 
          */
-        return new Response("Menu created", 201);
+        return new Response("Menu created", Response::HTTP_CREATED);
     }
 
 }
