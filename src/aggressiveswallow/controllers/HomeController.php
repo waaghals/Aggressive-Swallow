@@ -10,7 +10,6 @@ use Aggressiveswallow\Queries\FullNavigationQuery;
 use Aggressiveswallow\Factories\NavItemFactory;
 use Aggressiveswallow\Factories\MenuItemFactory;
 
-
 /**
  * Description of HomeController
  *
@@ -55,14 +54,17 @@ class HomeController
 
         $t = new Template("homeViews/frontPage");
         $t->locations = $locations;
-        
+
+        $t->pageTitle = "Home";
+
         $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ));
         $persistor = new DatabasePersistor($pdo);
         $repo = new GenericRepository($persistor);
-        $navTree = $repo->read(new FullNavigationQuery($pdo, new NavItemFactory(new MenuItemFactory())));
-        $t->navItems = $navTree;
+        $navigationRoot = $repo->read(new FullNavigationQuery($pdo, new NavItemFactory(new MenuItemFactory())));
+        $t->nav = $navigationRoot->getChildren();
+
         return new Response($t, 200);
     }
 

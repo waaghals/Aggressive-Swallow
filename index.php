@@ -17,7 +17,7 @@ try {
     $response = $router->handle($request);
     $response->send();
 } catch (Exception $e) {
-    $t = new Template("errors/Fatal");
+    $nav = new Template("errors/Fatal");
     $msg = sprintf("Message: %s<br />Line: %s<br />File: %s<br /><br />", $e->getMessage(), $e->getLine(), $e->getFile());
     $msg .= str_repeat(">", 15);
     $msg .= " Trace ";
@@ -29,10 +29,10 @@ try {
         $msg .= sprintf("%s. <strong>%s</strong>::%s <i>(%s)</i><br />", $i, $trace["class"], $trace["function"], @$trace["line"]);
         $i++;
     }
-    $t->message = $msg;
-    $t->code = Response::HTTP_INTERNAL_SERVER_ERROR;
-    $t->type = Response::$statusTexts[$t->code];
+    $nav->message = $msg;
+    $nav->code = Response::HTTP_INTERNAL_SERVER_ERROR;
+    $nav->type = Response::$statusTexts[$nav->code];
 
-    $response = new Response($t, $t->code);
+    $response = new Response($nav, $nav->code);
     $response->send();
 }

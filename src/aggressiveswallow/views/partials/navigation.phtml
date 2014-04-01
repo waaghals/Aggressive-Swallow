@@ -2,7 +2,7 @@
     <ul class="nav navbar-nav">
         <?php
         $link = "<li><a href=\"%s\">%s</a></li>";
-        foreach ($navItems as $navItem):
+        foreach ($nav as $navItem):
             /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
             if ($navItem->hasChildren()):
                 include "subNavigation.phtml";
