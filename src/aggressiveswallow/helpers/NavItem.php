@@ -13,19 +13,19 @@ class NavItem {
 
     /**
      *
-     * @var array \Aggressiveswallow\Helpers\NavItem  
-     */
-    private $children;
-
-    /**
-     *
      * @var \Aggressiveswallow\Models\MenuItem 
      */
     private $menuItem;
 
     /**
+     *
+     * @var \Aggressiveswallow\Helpers\NavItem[]
+     */
+    private $children = array();
+
+    /**
      * 
-     * @return \Aggressiveswallow\Helpers\NavItem
+     * @return \Aggressiveswallow\Helpers\NavItem[]
      */
     public function getChildren() {
         return $this->children;
@@ -36,7 +36,7 @@ class NavItem {
      * @param \Aggressiveswallow\Helpers\NavItem $child
      */
     public function addChild($child) {
-        $this->children[] = $child;
+        array_push($this->children, $child);
     }
 
     /**
@@ -59,10 +59,10 @@ class NavItem {
      * 
      * @return string name from the menuItem
      */
-    public function getName(){
+    public function getName() {
         return $this->menuItem->getName();
     }
-    
+
     /**
      * 
      * @return string URI from the menuItem
@@ -70,4 +70,5 @@ class NavItem {
     public function getUri() {
         return $this->menuItem->getUri();
     }
+
 }
