@@ -4,7 +4,7 @@ namespace Aggressiveswallow\Repositories;
 
 use Aggressiveswallow\PersistanceInterface;
 use Aggressiveswallow\Models\BaseEntity;
-use Aggressiveswallow\QueryInterface;
+use Aggressiveswallow\ResultQueryInterface;
 
 /**
  * Repository for locations
@@ -75,21 +75,19 @@ class GenericRepository
 
     public function delete(BaseEntity $object) {
         if ($object->getId() == null) {
-            throw new Exception("Can't delete \$object because it does not have a Id (PKey)");
+            throw new \Exception("Can't delete \$object because it does not have a Id (PKey)");
         }
+
+        $this->persistor->destroy($object->getId());
     }
 
-    public function read(QueryInterface $query) {
-        if (!is_a($query, "Aggressiveswallow\QueryInterface")) {
-            throw new Exception("\$query does not implement QueryInterface");
-        }
-        $query->setClassName("Aggressiveswallow\Models\Location");
+    public function read(ResultQueryInterface $query) {
         return $query->fetch();
     }
 
     public function update(BaseEntity $object) {
         if ($object->getId() == null) {
-            throw new Exception("Can't update \$object because does not have a Id (PKey)");
+            throw new \Exception("Can't update \$object because does not have a Id (PKey)");
         }
 
         // Because create works recursively it has to work with existing id's as well

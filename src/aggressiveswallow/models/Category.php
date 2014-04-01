@@ -2,34 +2,47 @@
 
 namespace Aggressiveswallow\Models;
 
+
 /**
- * Category enums from the database.
+ * Category from the database.
  *
  * @author Patrick
  */
 class Category
         extends BaseEntity {
-
+    
     /**
      *
-     * @var string Name of the category
+     * @var \Aggressiveswallow\Models\MenuItem
      */
-    private $name;
-
-    function __construct($name) {
-        $this->setName($name);
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-    }
+    private $menuItem;
 
     public function isValid() {
         return strlen($this->name) > 1;
+    }
+    
+    /**
+     * 
+     * @return \Aggressiveswallow\Models\MenuItem
+     */
+    public function getMenuItem() {
+        return $this->menuItem;
+    }
+
+    /**
+     * 
+     * @param \Aggressiveswallow\Models\MenuItem $menuItem
+     */
+    public function setMenuItem(MenuItem $menuItem) {
+        $this->menuItem = $menuItem;
+    }
+    
+    /**
+     * 
+     * @return string category name
+     */
+    public function getName() {
+        return $this->menuItem->getName();
     }
 
 }
