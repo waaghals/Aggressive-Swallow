@@ -31,6 +31,10 @@ class NavItem {
         return $this->children;
     }
 
+    public function hasChildren() {
+        return count($this->children) > 0;
+    }
+
     /**
      * 
      * @param \Aggressiveswallow\Helpers\NavItem $child

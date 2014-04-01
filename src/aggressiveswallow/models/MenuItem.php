@@ -70,7 +70,7 @@ class MenuItem
      */
     public function setUri($uri) {
         if (substr($uri, 0, 1) != "/") {
-            throw new Exception("Not a valid URI was set. Menu uri should always be the full path.");
+            throw new \Exception("Not a valid URI was set. Menu uri should always be the full path.");
         }
         $this->uri = $uri;
     }

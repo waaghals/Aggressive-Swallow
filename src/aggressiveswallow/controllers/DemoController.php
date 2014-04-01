@@ -14,7 +14,7 @@ use Aggressiveswallow\Queries\LatestLocationQuery;
 use Aggressiveswallow\Queries\FullTreeQuery;
 use Aggressiveswallow\Queries\Treequeries\AddQuery;
 use Aggressiveswallow\Queries\Treequeries\SubtractQuery;
-use Aggressiveswallow\Queries\NavigationQuery;
+use Aggressiveswallow\Queries\FullNavigationQuery;
 use Aggressiveswallow\Factories\NavItemFactory;
 use Aggressiveswallow\Factories\MenuItemFactory;
 
@@ -28,7 +28,7 @@ class DemoController
 
     private $body;
     private $pdo;
-    
+
     public function __construct() {
         $this->pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
@@ -92,10 +92,11 @@ class DemoController
     public function navTreeAction() {
         $persistor = new DatabasePersistor($this->pdo);
         $repo = new GenericRepository($persistor);
-        $navTree = $repo->read(new NavigationQuery($this->pdo, new NavItemFactory(new MenuItemFactory())));
+        $navTree = $repo->read(new FullNavigationQuery($this->pdo, new NavItemFactory(new MenuItemFactory())));
 
         $this->body = "";
         $this->showTree($navTree);
+
         return new Response($this->body, Response::HTTP_OK);
     }
 
@@ -110,7 +111,7 @@ class DemoController
 
             $children = $node->getChildren();
 
-            $this->body .= "<li>" . $node->getName() . "</li>";
+            $this->body .= "<li>" . $node->getName() . " (" . $node->getMenuItem()->getTree()->getId() . ")   L:" . $node->getMenuItem()->getTree()->getLft() . " R" . $node->getMenuItem()->getTree()->getRgt() . "</li>";
             if (count($children) > 0) {
                 $this->showTree($children);
             }

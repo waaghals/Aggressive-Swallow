@@ -4,6 +4,12 @@ namespace Aggressiveswallow\Controllers;
 
 use Aggressiveswallow\Tools\Template;
 use Symfony\Component\HttpFoundation\Response;
+use Aggressiveswallow\Persistors\DatabasePersistor;
+use Aggressiveswallow\Repositories\GenericRepository;
+use Aggressiveswallow\Queries\FullNavigationQuery;
+use Aggressiveswallow\Factories\NavItemFactory;
+use Aggressiveswallow\Factories\MenuItemFactory;
+
 
 /**
  * Description of HomeController
@@ -49,6 +55,14 @@ class HomeController
 
         $t = new Template("homeViews/frontPage");
         $t->locations = $locations;
+        
+        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
+        $persistor = new DatabasePersistor($pdo);
+        $repo = new GenericRepository($persistor);
+        $navTree = $repo->read(new FullNavigationQuery($pdo, new NavItemFactory(new MenuItemFactory())));
+        $t->navItems = $navTree;
         return new Response($t, 200);
     }
 

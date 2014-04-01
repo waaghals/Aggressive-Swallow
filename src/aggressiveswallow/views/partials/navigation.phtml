@@ -1,0 +1,16 @@
+<div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+        <?php
+        $link = "<li><a href=\"%s\">%s</a></li>";
+        foreach ($navItems as $navItem):
+            /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
+            if ($navItem->hasChildren()):
+                include "subNavigation.phtml";
+            else:
+                echo sprintf($link, $navItem->getUri(), $navItem->getName());
+            endif;
+        endforeach;
+        ?>
+    </ul>
+</div>
+<!-- /.navbar-collapse -->
