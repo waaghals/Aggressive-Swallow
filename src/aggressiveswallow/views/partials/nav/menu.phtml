@@ -2,6 +2,7 @@
     <ul class="nav navbar-nav">
         <?php
         $regularLink = "<li><a href=\"%s\">%s</a></li>";
+        $nav = Aggressiveswallow\Tools\Container::make("navigation");
         foreach ($nav as $navItem):
             /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
             if ($navItem->hasChildren()):

@@ -18,14 +18,10 @@ class HomeController
         $t = new Template("homeViews/frontPage");
 
         $repo = Container::make("GenericRepository");
-        $navQ = Container::make("navQuery");
         $latestQ = Container::make("latestLocationQuery");
 
-        $navRoot = $repo->read($navQ);
         $t->locations = $repo->read($latestQ);
-
         $t->pageTitle = "Home";
-        $t->nav = $navRoot->getChildren();
 
         return new Response($t, 200);
     }

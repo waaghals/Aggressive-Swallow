@@ -1,17 +1,13 @@
 <?php
 
 use Aggressiveswallow\Tools\Container;
-
 use Aggressiveswallow\Persistors\DatabasePersistor;
-
 use Aggressiveswallow\Factories\AddressFactory;
 use Aggressiveswallow\Factories\LocationFactory;
 use Aggressiveswallow\Factories\NavItemFactory;
 use Aggressiveswallow\Factories\MenuItemFactory;
-
 use Aggressiveswallow\Queries\FullNavigationQuery;
 use Aggressiveswallow\Queries\LatestLocationQuery;
-
 use Aggressiveswallow\Repositories\GenericRepository;
 
 // Register the objects
@@ -56,8 +52,16 @@ Container::register("locationFactory", function() {
     return new LocationFactory($mif, $af);
 });
 
-Container::register("latestLocationQuery", function(){
+Container::register("latestLocationQuery", function() {
     $db = Container::make("db");
     $factory = Container::make("locationFactory");
     return new LatestLocationQuery($db, $factory);
+});
+
+Container::registerSingleton("navigation", function() {
+    $repo = Container::make("GenericRepository");
+    $navQ = Container::make("navQuery");
+    
+    $navRoot = $repo->read($navQ);
+    return $navRoot->getChildren();
 });
