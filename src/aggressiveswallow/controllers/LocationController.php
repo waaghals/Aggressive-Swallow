@@ -12,7 +12,7 @@ use Aggressiveswallow\Tools\Responses\ErrorResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Aggressiveswallow\Models\Location;
 use Aggressiveswallow\Models\Address;
-use Aggressiveswallow\Models\Enums\LocationType;
+use Aggressiveswallow\Models\MenuItem;
 use Aggressiveswallow\Tools\Template;
 /**
  * Description of Location
@@ -29,9 +29,21 @@ class LocationController
     public function showAction($locationId = null) {
         
         // Create a temp $location
-        $address = new Address("Street", "3a", "Nijmegen", "6543ZZ");
+        $address = new Address();
+        $address->setCity("Arnhem");
+        $address->setHouseNumber(170);
+        $address->setStreet("Straatnaam");
+        $address->setZipcode("6000AA");
         
-        $location = new Location(10000000, LocationType::Appartment, $address);
+        $cat = new MenuItem();
+        $cat->setName("Huizen");
+        $cat->setUri("/overview/show/category=huizen/");
+        
+        $location = new Location();
+        $location->setAddress($address);
+        $location->setCategory($cat);
+        $location->setDescription("Fantastisch huis");
+        $location->setPrice(1000000);
         
         $t = new Template("locationViews/showLocation");
         $t->location = $location;
