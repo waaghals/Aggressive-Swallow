@@ -15,7 +15,7 @@ class AccountController
         extends BaseController {
 
     public function registerAction() {
-        if(isset($POST["submit"]) && $this->isValidRegistration()){
+        if (isset($_POST["submit"]) && $this->isValidRegistration()) {
             $r = new Response();
             $r->mustRevalidate();
             $r->setLastModified();
@@ -24,19 +24,25 @@ class AccountController
         }
         return $this->showRegistrationForm();
     }
-    
+
     public function loginAction() {
-        if(isset($POST["submit"]) && $this->isValidLogin()){
+        if (isset($_POST["submit"])) {
             $r = new Response();
             $r->mustRevalidate();
             $r->setLastModified();
-            $r->setContent("Login successfull", Response::HTTP_CREATED);
+            if ($this->isValidLogin()) {
+                $r->setContent("Login successfull", Response::HTTP_ACCEPTED);
+            }
+            else {
+                $r->setContent("Login FAILED", Response::HTTP_OK);
+            }
+            
             return $r;
         }
         return $this->showLoginForm();
     }
-    
-    private function showRegistrationForm(){
+
+    private function showRegistrationForm() {
         $t = new Template("accountViews/registration");
 
         $repo = Container::make("GenericRepository");
@@ -47,8 +53,8 @@ class AccountController
 
         return new Response($t, 200);
     }
-    
-    private function showLoginForm(){
+
+    private function showLoginForm() {
         $t = new Template("accountViews/login");
 
         $repo = Container::make("GenericRepository");
@@ -61,11 +67,17 @@ class AccountController
     }
 
     private function isValidRegistration() {
-        
+        return true;
     }
 
     public function isValidLogin() {
-        
+        $repo = Container::make("genericRepository");
+        $q = Container::make("userByNameQuery");
+        $q->setName($_POST["name"]);
+
+        /* @var $user \Aggressiveswallow\Models\User */
+        $user = $repo->read($q);
+        return $user->hasPassword($_POST["password"]);
     }
 
 }

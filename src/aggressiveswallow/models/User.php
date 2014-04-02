@@ -33,15 +33,15 @@ class User
 
     public function getPassHashForPassword($password) {
         if (!isset($this->salt)) {
-            throw new \Exception("Salt needs to be set in order to change the pass.");
+            throw new \Exception("Salt needs to be set in order to generate a passhash.");
         }
         return hash("sha512", $this->salt . $password);
     }
 
     public function hasPassword($password) {
         $thisHash = $this->getPassHashForPassword($password);
-
-        return $thisHash === $this->passhash;
+        
+        return strtolower($thisHash) == strtolower($this->passhash);
     }
 
     public function getSalt() {
