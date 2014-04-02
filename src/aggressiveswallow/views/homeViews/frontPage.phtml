@@ -30,6 +30,7 @@ if (count($locations) > 0):
         $item->street = $loc->getAddress()->getFullStreetName();
         $item->description = $loc->getDescription();
         $item->price = $loc->getFormattedPrice();
+        $item->id = $loc->getId();
 
         echo $item;
     endfor;

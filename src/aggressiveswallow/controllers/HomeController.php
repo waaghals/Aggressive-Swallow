@@ -21,39 +21,6 @@ class HomeController
         extends BaseController {
 
     public function indexAction() {
-        $locations = array(
-            array(
-                "street" => "Straat 1",
-                "desc" => "Mooi huis"
-            ),
-            array(
-                "street" => "Straat 2",
-                "desc" => "Prachtig huis"
-            ),
-            array(
-                "street" => "Straat 3",
-                "desc" => "Geef huis"
-            ),
-            array(
-                "street" => "Straat 3",
-                "desc" => "Geef huis"
-            ),
-            array(
-                "street" => "Straat 3",
-                "desc" => "Geef huis"
-            ),
-            array(
-                "street" => "Straat 3",
-                "desc" => "Geef huis"
-            ),
-            array(
-                "street" => "Straat 4",
-                "desc" => "Lelijk huis"
-            )
-        );
-
-
-
         $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ));
