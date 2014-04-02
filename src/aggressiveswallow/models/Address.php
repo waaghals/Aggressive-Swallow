@@ -33,6 +33,12 @@ class Address
      * @var string The zipcode for the location
      */
     private $zipcode;
+    
+    /**
+     *
+     * @var string
+     */
+    private $neighborhood;
 
     public function getStreet() {
         return $this->street;
@@ -73,5 +79,15 @@ class Address
     public function isValid() {
         return true;
     }
+    
+    public function getNeighborhood() {
+        return $this->neighborhood;
+    }
+
+    public function setNeighborhood($neighbourhood) {
+        $this->neighborhood = $neighbourhood;
+    }
+
+
 
 }

@@ -20,7 +20,8 @@ class AddressFactory
         $address->setCity($data["address_city"]);
         $address->setZipcode($data["address_zipcode"]);
         $address->setHouseNumber($data["address_housenumber"]);
-
+        $address->setNeighborhood($data["address_neighborhood"]);
+        
         return $address;
     }
 
