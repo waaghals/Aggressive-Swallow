@@ -14,6 +14,12 @@ use Aggressiveswallow\Tools\Container;
 class AccountController
         extends BaseController {
 
+    private $loginError;
+
+    public function __construct() {
+        $this->loginError = false;
+    }
+
     public function registerAction() {
         if (isset($_POST["submit"]) && $this->isValidRegistration()) {
             $r = new Response();
@@ -26,19 +32,17 @@ class AccountController
     }
 
     public function loginAction() {
-        if (isset($_POST["submit"])) {
+        if (isset($_POST["submit"]) && $this->isValidLogin()) {
             $r = new Response();
             $r->mustRevalidate();
             $r->setLastModified();
-            if ($this->isValidLogin()) {
-                $r->setContent("Login successfull", Response::HTTP_ACCEPTED);
-            }
-            else {
-                $r->setContent("Login FAILED", Response::HTTP_OK);
-            }
-            
+            $r->setContent("Login successfull", Response::HTTP_ACCEPTED);
+
             return $r;
+        } elseif(isset($_POST["submit"])) {
+            $this->loginError = true;
         }
+
         return $this->showLoginForm();
     }
 
@@ -55,6 +59,7 @@ class AccountController
     }
 
     private function showLoginForm() {
+
         $t = new Template("accountViews/login");
 
         $repo = Container::make("GenericRepository");
@@ -62,6 +67,11 @@ class AccountController
 
         $t->locations = $repo->read($latestQ);
         $t->pageTitle = "Home";
+        if ($this->loginError) {
+            $t->error = "Gebruikersnaam of wachtwoord is verkeerd.";
+        }
+
+        $this->loginError = false;
 
         return new Response($t, 200);
     }
@@ -77,6 +87,12 @@ class AccountController
 
         /* @var $user \Aggressiveswallow\Models\User */
         $user = $repo->read($q);
+
+        if ($user->getName() == null) {
+            // No user found
+            return false;
+        }
+
         return $user->hasPassword($_POST["password"]);
     }
 
