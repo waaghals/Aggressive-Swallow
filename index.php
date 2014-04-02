@@ -26,7 +26,7 @@ try {
 
     $i = 0;
     foreach ($e->getTrace() as $trace) {
-        $msg .= sprintf("%s. <strong>%s</strong>::%s <i>(%s)</i><br />", $i, $trace["class"], $trace["function"], @$trace["line"]);
+        $msg .= sprintf("%s. <strong>%s</strong>::%s <i>(%s)</i><br />", $i, @$trace["class"], @$trace["function"], @$trace["line"]);
         $i++;
     }
     $nav->message = $msg;

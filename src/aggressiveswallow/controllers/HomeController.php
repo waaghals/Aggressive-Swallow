@@ -18,8 +18,6 @@ use Aggressiveswallow\Factories\MenuItemFactory;
 class HomeController
         extends BaseController {
 
-    private $body;
-
     public function indexAction() {
         $locations = array(
             array(
