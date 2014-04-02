@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Genereertijd: 31 mrt 2014 om 18:50
+-- Genereertijd: 02 apr 2014 om 21:12
 -- Serverversie: 5.6.14
 -- PHP-versie: 5.5.6
 
@@ -32,24 +32,9 @@ CREATE TABLE IF NOT EXISTS `address` (
   `housenumber` varchar(10) NOT NULL,
   `city` varchar(255) NOT NULL,
   `zipcode` varchar(15) NOT NULL,
+  `neighborhood` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `menuitem_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  KEY `tree_id` (`menuitem_id`),
-  KEY `menuitem_id` (`menuitem_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 -- --------------------------------------------------------
 
@@ -62,12 +47,16 @@ CREATE TABLE IF NOT EXISTS `location` (
   `address_id` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
   `price` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `menuitem_id` int(11) NOT NULL,
+  `energy` enum('a','b','c','d') NOT NULL,
+  `newbuild` tinyint(1) NOT NULL,
+  `area` int(11) NOT NULL,
+  `yardarea` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `address_id` (`address_id`,`category_id`),
-  KEY `category` (`category_id`),
-  KEY `category_id` (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  KEY `address_id` (`address_id`,`menuitem_id`),
+  KEY `category` (`menuitem_id`),
+  KEY `category_id` (`menuitem_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -83,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `menuitem` (
   PRIMARY KEY (`id`),
   KEY `tree_id` (`tree_id`),
   KEY `tree_id_2` (`tree_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
 
 -- --------------------------------------------------------
 
@@ -96,24 +85,18 @@ CREATE TABLE IF NOT EXISTS `tree` (
   `lft` int(11) NOT NULL,
   `rgt` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=109 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=139 ;
 
 --
 -- Beperkingen voor gedumpte tabellen
 --
 
 --
--- Beperkingen voor tabel `category`
---
-ALTER TABLE `category`
-  ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`menuitem_id`) REFERENCES `menuitem` (`id`);
-
---
 -- Beperkingen voor tabel `location`
 --
 ALTER TABLE `location`
-  ADD CONSTRAINT `location_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
-  ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`menuitem_id`) REFERENCES `menuitem` (`id`),
+  ADD CONSTRAINT `location_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
 
 --
 -- Beperkingen voor tabel `menuitem`
