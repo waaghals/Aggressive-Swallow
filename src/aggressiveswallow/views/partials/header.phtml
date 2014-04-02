@@ -1,3 +1,7 @@
+<?php
+
+use Aggressiveswallow\Tools\Template;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,8 +46,11 @@
         </nav>
 
         <div class="container">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li class="active">Data</li>
-            </ol>
+            <?php
+            /*if (isset($breadcrums) && is_array($breadcrums)):
+                $bc = new Template("partials\nav\breadcrums");
+                $bc->breadcrums = $breadcrums;
+                echo $bc;
+            endif;
+            */
+            include "nav/breadcrums.phtml";

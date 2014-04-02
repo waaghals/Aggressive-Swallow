@@ -10,6 +10,7 @@ use Aggressiveswallow\Queries\FullNavigationQuery;
 use Aggressiveswallow\Queries\LatestLocationQuery;
 use Aggressiveswallow\Queries\SingleLocationQuery;
 use Aggressiveswallow\Repositories\GenericRepository;
+use Aggressiveswallow\Queries\BreadcrumsQuery;
 
 // Register the objects
 Container::registerSingleton("db", function() {
@@ -63,6 +64,12 @@ Container::register("singleLocationQuery", function() {
     $db = Container::make("db");
     $factory = Container::make("locationFactory");
     return new SingleLocationQuery($db, $factory);
+});
+
+Container::register("breadcrumsQuery", function() {
+    $db = Container::make("db");
+    $factory = Container::make("menuItemFactory");
+    return new BreadcrumsQuery($db, $factory);
 });
 
 Container::registerSingleton("navigation", function() {

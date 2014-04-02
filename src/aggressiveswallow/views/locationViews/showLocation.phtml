@@ -17,10 +17,11 @@ function getLabel($l) {
             return sprintf($span, "danger", "D");
     }
 }
-
-$header = new Template("partials/header");
-$header->pageTitle = $location->getAddress()->getFullStreetName();
-echo $header;
+include "../partials/header.phtml";
+//$header = new Template("partials/header");
+//$header->pageTitle = $location->getAddress()->getFullStreetName();
+//$header->breadcrums = $breadcrums;
+//echo $header;
 ?>
 <div class="row">
     <div class="page-header">
@@ -155,6 +156,5 @@ echo $header;
     </div>
 </div>
 <?php
-$footer = new Template("partials/footer");
-$footer->bottomJs = file_get_contents(VIEW_PATH . "locationViews/openFirstTab.js");
-echo $footer;
+$bottomJs = file_get_contents(VIEW_PATH . "locationViews/openFirstTab.js");
+include "../partials/footer.phtml";
