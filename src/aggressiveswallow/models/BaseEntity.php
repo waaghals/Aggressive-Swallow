@@ -43,6 +43,4 @@ abstract class BaseEntity {
     public function __toString() {
         return (string) $this->getId();
     }
-
-    abstract function isValid();
 }
