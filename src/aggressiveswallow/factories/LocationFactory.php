@@ -37,6 +37,10 @@ class LocationFactory
         $location->setId(intval($data["location_id"]));
         $location->setPrice($data["location_price"]);
         $location->setDescription($data["location_description"]);
+        $location->setArea($data["location_area"]);
+        $location->setEnergyLabel($data["location_energylabel"]);
+        $location->setNewBuild($data["location_newbuild"]);
+        $location->setYardArea($data["location_yardarea"]);
 
         if (isset($data["menuitem_id"])) {
             $menuItem = $this->mif->create($data);

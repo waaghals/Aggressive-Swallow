@@ -25,6 +25,30 @@ class Location
     private $address;
 
     /**
+     *
+     * @var string 
+     */
+    private $energyLabel;
+
+    /**
+     *
+     * @var int
+     */
+    private $area;
+
+    /**
+     *
+     * @var int
+     */
+    private $yardArea;
+
+    /**
+     *
+     * @var boolean
+     */
+    private $newBuild;
+
+    /**
      * 
      * @return Aggressiveswallow\Models\MenuItem
      */
@@ -65,6 +89,42 @@ class Location
             return ($this->address != null);
         }
         return false;
+    }
+
+    public function getEnergyLabel() {
+        return $this->energyLabel;
+    }
+
+    public function setEnergyLabel($energyLabel) {
+        $validLabels = array("a", "b", "c", "d");
+        if (!in_array($energyLabel, $validLabels)) {
+            throw new \Exception("Not a valid label passed to setEnergyLabel");
+        }
+        $this->energyLabel = $energyLabel;
+    }
+
+    public function getArea() {
+        return intval($this->area);
+    }
+
+    public function getYardArea() {
+        return intval($this->yardArea);
+    }
+
+    public function setArea($area) {
+        $this->area = $area;
+    }
+
+    public function setYardArea($yardArea) {
+        $this->yardArea = $yardArea;
+    }
+
+    public function getNewBuild() {
+        return (bool) $this->newBuild;
+    }
+
+    public function setNewBuild($newBuild) {
+        $this->newBuild = $newBuild;
     }
 
 }

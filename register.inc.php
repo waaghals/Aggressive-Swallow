@@ -8,6 +8,7 @@ use Aggressiveswallow\Factories\NavItemFactory;
 use Aggressiveswallow\Factories\MenuItemFactory;
 use Aggressiveswallow\Queries\FullNavigationQuery;
 use Aggressiveswallow\Queries\LatestLocationQuery;
+use Aggressiveswallow\Queries\SingleLocationQuery;
 use Aggressiveswallow\Repositories\GenericRepository;
 
 // Register the objects
@@ -56,6 +57,12 @@ Container::register("latestLocationQuery", function() {
     $db = Container::make("db");
     $factory = Container::make("locationFactory");
     return new LatestLocationQuery($db, $factory);
+});
+
+Container::register("singleLocationQuery", function() {
+    $db = Container::make("db");
+    $factory = Container::make("locationFactory");
+    return new SingleLocationQuery($db, $factory);
 });
 
 Container::registerSingleton("navigation", function() {

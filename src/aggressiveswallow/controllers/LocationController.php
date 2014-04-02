@@ -14,6 +14,7 @@ use Aggressiveswallow\Models\Location;
 use Aggressiveswallow\Models\Address;
 use Aggressiveswallow\Models\MenuItem;
 use Aggressiveswallow\Tools\Template;
+use Aggressiveswallow\Tools\Container;
 /**
  * Description of Location
  *
@@ -26,8 +27,8 @@ class LocationController
         return new ErrorResponse("Create action not yet implented.", Response::HTTP_NOT_IMPLEMENTED);
     }
 
-    public function showAction($locationId = null) {
-        
+    public function showAction($locationId) {
+        /*
         // Create a temp $location
         $address = new Address();
         $address->setCity("Arnhem");
@@ -44,9 +45,13 @@ class LocationController
         $location->setCategory($cat);
         $location->setDescription("Fantastisch huis");
         $location->setPrice(1000000);
+        */
+        $repo = Container::make("GenericRepository");
+        $q = Container::make("SingleLocationQuery");
+        $q->setId((int)$locationId);
         
         $t = new Template("locationViews/showLocation");
-        $t->location = $location;
+        $t->location = $repo->read($q);
         
         return new Response($t, 200);
         

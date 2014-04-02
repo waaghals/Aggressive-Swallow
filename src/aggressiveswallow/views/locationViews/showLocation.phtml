@@ -2,6 +2,22 @@
 
 use Aggressiveswallow\Tools\Template;
 
+/* @var $location \Aggressiveswallow\Models\Location */
+
+function getLabel($l) {
+    $span = "<span class=\"label label-%s\">%s</span>";
+    switch ($l) {
+        case "a":
+            return sprintf($span, "success", "A");
+        case "b":
+            return sprintf($span, "info", "B");
+        case "c":
+            return sprintf($span, "warning", "C");
+        case "d":
+            return sprintf($span, "danger", "D");
+    }
+}
+
 $header = new Template("partials/header");
 $header->pageTitle = $location->getAddress()->getFullStreetName();
 echo $header;
@@ -43,25 +59,31 @@ echo $header;
                     <strong>
                         Opervlakte: 
                     </strong>
-                    32 m<sup>2</sup>
+                    <?php echo $location->getArea(); ?> m<sup>2</sup>
                 </p>
                 <p>
                     <strong>
                         Opervlakte tuin: 
                     </strong>
-                    14 m<sup>2</sup>
+                    <?php echo $location->getYardArea(); ?> m<sup>2</sup>
                 </p>
                 <p>
                     <strong>
                         Energielabel: 
                     </strong>
-                    <span class="label label-success">A</span>
+                    <?php echo getLabel($location->getEnergyLabel()); ?>
                 </p>
                 <p>
                     <strong>
                         Nieuwbouw: 
                     </strong>
-                    Nee
+                    <?php if ($location->getNewBuild()): ?>
+                        Ja
+                    <?php else: ?>
+                        Nee
+                    <?php
+                    endif;
+                    ?>
                 </p>
 
 
@@ -70,7 +92,7 @@ echo $header;
             </div>
             <div class="tab-pane fade" id="description">
                 <h2>Omschrijving</h2>
-                <p>Lange omschrijving</p>
+                <p><?php echo $location->getDescription(); ?></p>
             </div>
             <div class="tab-pane fade" id="pictures">
                 <h2>Foto's</h2>
@@ -92,13 +114,13 @@ echo $header;
             <div class="panel-body">
                 <p>
                     <strong>Postadres</strong><br/>
-                    Straatnaam 34<br/>
-                    6000AA, Arnhem
+                    <?php echo $location->getAddress()->getFullStreetName(); ?><br/>
+                    <?php echo $location->getAddress()->getZipcode(); ?>, <?php echo $location->getAddress()->getCity(); ?>
                 </p>
 
                 <p>
                     <strong>Wijk</strong><br/>
-                    Burgermeesterswijk
+                    <?php echo $location->getAddress()->getNeighborhood(); ?>
                 </p>
             </div>
         </div>
@@ -110,10 +132,10 @@ echo $header;
             <div class="panel-body">
                 <p>
                     <strong>Categorie: </strong> 
-                    Eengezinswoning
+                    <?php echo $location->getCategory()->getName(); ?>
                 </p>
 
-                <a class="btn btn-default" href="#">Meer aanbod in deze categorie.</a>
+                <a class="btn btn-default" href="<?php echo $location->getCategory()->getUri(); ?>">Meer aanbod in deze categorie.</a>
             </div>
         </div>
 
@@ -122,7 +144,7 @@ echo $header;
             <div class="panel-body">
                 <p>
                     <strong>Prijs</strong>
-                    &euro; 150.000,-
+                    <?php echo $location->getFormattedPrice(); ?>
                 </p>
                 <a class="btn btn-primary">
                     <span class="glyphicon glyphicon-shopping-cart"></span>

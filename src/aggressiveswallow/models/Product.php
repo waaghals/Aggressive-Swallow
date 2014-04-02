@@ -1,6 +1,6 @@
 <?php
-namespace Aggressiveswallow\Models;
 
+namespace Aggressiveswallow\Models;
 
 /**
  * Description of Product
@@ -39,7 +39,8 @@ class Product
     }
 
     public function getFormattedPrice() {
-        return sprintf('&euro; %01.2f', $this->price);
+        $format = "&euro; %s,-";
+        return sprintf($format, number_format($this->price, 0, ",", "."));
     }
 
     public function isValid() {

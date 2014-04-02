@@ -19,4 +19,4 @@ FROM   `location` AS `l`
          ON ( `l`.`address_id` = `a`.`id` ) 
        JOIN `menuitem` AS `c` 
          ON ( `l`.`menuitem_id` = `c`.`id` ) 
-LIMIT  10; 
+WHERE  `l`.`id` = :id 
