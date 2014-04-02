@@ -10,6 +10,8 @@ define("DS", "/", true);
  */
 define('BASE_PATH', realpath(dirname(__FILE__)) . DS, true);
 
+setlocale(LC_ALL, 'nl_NL');
+
 require BASE_PATH . "src" . DS . "aggressiveswallow" . DS . "tools" . DS . "autoloader.php";
 
 $loader = new Autoloader();

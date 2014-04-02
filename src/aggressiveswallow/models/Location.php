@@ -2,7 +2,7 @@
 
 namespace Aggressiveswallow\Models;
 
-use Aggressiveswallow\Models\Category;
+use Aggressiveswallow\Models\MenuItem;
 
 /**
  * Basic items of a product
@@ -14,7 +14,7 @@ class Location
 
     /**
      *
-     * @var Aggressiveswallow\Models\Enums\Category
+     * @var Aggressiveswallow\Models\MenuItem
      */
     private $category;
 
@@ -26,7 +26,7 @@ class Location
 
     /**
      * 
-     * @return Aggressiveswallow\Models\Category
+     * @return Aggressiveswallow\Models\MenuItem
      */
     public function getCategory() {
         return $this->category;
@@ -34,7 +34,7 @@ class Location
 
     /**
      * 
-     * @return Aggressiveswallow\Models\Address 
+     * @return \Aggressiveswallow\Models\Address 
      */
     public function getAddress() {
         return $this->address;
@@ -42,9 +42,9 @@ class Location
 
     /**
      * 
-     * @param \Aggressiveswallow\Models\Category $category
+     * @param \Aggressiveswallow\Models\MenuItem $category
      */
-    public function setCategory(Category $category) {
+    public function setCategory(MenuItem $category) {
         $this->category = $category;
     }
 

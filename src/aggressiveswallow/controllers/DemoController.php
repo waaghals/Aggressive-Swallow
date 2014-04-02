@@ -17,6 +17,7 @@ use Aggressiveswallow\Queries\Treequeries\SubtractQuery;
 use Aggressiveswallow\Queries\FullNavigationQuery;
 use Aggressiveswallow\Factories\NavItemFactory;
 use Aggressiveswallow\Factories\MenuItemFactory;
+use Aggressiveswallow\Factories\LocationFactory;
 
 /**
  * Description of HomeController
@@ -53,9 +54,8 @@ class DemoController
     public function hydrateAction() {
         $persistor = new DatabasePersistor($this->pdo);
         $locRepo = new GenericRepository($persistor);
-        $query = new LatestLocationQuery($this->pdo);
-        $query->setClassName("Aggressiveswallow\Models\Location");
-
+        $query = new LatestLocationQuery($this->pdo,new LocationFactory());
+        
         $result = $locRepo->read($query);
         $body = sprintf("<pre>%s</pre>", print_r($result, true));
         return new Response($body, 200);

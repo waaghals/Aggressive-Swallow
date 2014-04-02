@@ -3,6 +3,7 @@
 namespace Aggressiveswallow\Queries;
 
 use Aggressiveswallow\ResultQueryInterface;
+use Aggressiveswallow\Factories\LocationFactory;
 
 /**
  * Query the latest locations.
@@ -11,20 +12,32 @@ use Aggressiveswallow\ResultQueryInterface;
  */
 class LatestLocationQuery
         extends BaseQuery
-        implements ResultQueryInterfaceerface {
+        implements ResultQueryInterface {
+
+    /**
+     *
+     * @var \Aggressiveswallow\Factories\LocationFactory
+     */
+    private $factory;
+    
+    public function __construct(\PDO $connection, LocationFactory $f) {
+        parent::__construct($connection);
+        $this->factory = $f;
+    }
 
     public function fetch() {
 
-        if (empty($this->table)) {
-            throw new \Exception("Table name not set.");
-        }
-
-        $this->condition = "LIMIT 3";
-        $sql = sprintf("SELECT %s FROM `%s` %s", $this->fields(), $this->table, $this->condition);
+        $sql = file_get_contents(BASE_PATH . "src/aggressiveswallow/queries/sqlfiles/LatestLocations.sql");
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $locations = array();
+        foreach($rows as $row){
+            $locations[] = $this->factory->create($row);
+        }
+        return $locations;
     }
 
 }

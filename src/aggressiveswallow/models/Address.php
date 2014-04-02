@@ -34,13 +34,6 @@ class Address
      */
     private $zipcode;
 
-    function __construct($street, $houseNumber, $city, $zipcode) {
-        $this->street = $street;
-        $this->houseNumber = $houseNumber;
-        $this->city = $city;
-        $this->zipcode = $zipcode;
-    }
-
     public function getStreet() {
         return $this->street;
     }

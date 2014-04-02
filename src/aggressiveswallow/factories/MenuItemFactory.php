@@ -15,17 +15,20 @@ class MenuItemFactory
         implements FactoryInterface {
 
     public function create($data) {
-        $tree = new Tree();
-        $tree->setId(intval($data["tree_id"]));
-        $tree->setLft($data["tree_lft"]);
-        $tree->setRgt($data["tree_rgt"]);
-        
+
         $menuItem = new MenuItem();
         $menuItem->setId(intval($data["menuitem_id"]));
         $menuItem->setName($data["menuitem_name"]);
         $menuItem->setUri($data["menuitem_uri"]);
-        $menuItem->setTree($tree);
-        
+
+        if (isset($data['tree_id'])) {
+            $tree = new Tree();
+            $tree->setId(intval($data["tree_id"]));
+            $tree->setLft($data["tree_lft"]);
+            $tree->setRgt($data["tree_rgt"]);
+            $menuItem->setTree($tree);
+        }
+
         return $menuItem;
     }
 

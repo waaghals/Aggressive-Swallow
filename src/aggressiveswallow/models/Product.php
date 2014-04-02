@@ -1,12 +1,6 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Aggressiveswallow\Models;
+
 
 /**
  * Description of Product
@@ -42,6 +36,10 @@ class Product
 
     public function setPrice($price) {
         $this->price = $price;
+    }
+
+    public function getFormattedPrice() {
+        return sprintf('&euro; %01.2f', $this->price);
     }
 
     public function isValid() {

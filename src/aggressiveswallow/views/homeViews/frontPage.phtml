@@ -26,8 +26,10 @@ if (count($locations) > 0):
 
         // Show the HTML for the item.
         $item = new Template("homeViews/frontPageItem");
-        $item->street = $loc['street'];
-        $item->description = $loc['desc'];
+        /* @var $loc \Aggressiveswallow\Models\Location */
+        $item->street = $loc->getAddress()->getFullStreetName();
+        $item->description = $loc->getDescription();
+        $item->price = $loc->getFormattedPrice();
 
         echo $item;
     endfor;
