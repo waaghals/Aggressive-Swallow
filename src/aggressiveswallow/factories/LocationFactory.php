@@ -14,6 +14,23 @@ use Aggressiveswallow\Models\Location;
 class LocationFactory
         implements FactoryInterface {
 
+    /**
+     *
+     * @var \Aggressiveswallow\Factories\AddressFactory 
+     */
+    private $mif;
+
+    /**
+     *
+     * @var \Aggressiveswallow\Factories\MenuItemFactory  
+     */
+    private $af;
+
+    public function __construct(MenuItemFactory $mif, AddressFactory $af) {
+        $this->mif = $mif;
+        $this->af = $af;
+    }
+
     public function create($data) {
 
         $location = new Location();
@@ -22,14 +39,12 @@ class LocationFactory
         $location->setDescription($data["location_description"]);
 
         if (isset($data["menuitem_id"])) {
-            $mif = new MenuItemFactory();
-            $menuItem = $mif->create($data);
+            $menuItem = $this->mif->create($data);
             $location->setCategory($menuItem);
         }
-        
+
         if (isset($data["address_id"])) {
-            $af = new AddressFactory();
-            $address = $af->create($data);
+            $address = $this->af->create($data);
             $location->setAddress($address);
         }
 

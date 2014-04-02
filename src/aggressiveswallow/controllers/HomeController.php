@@ -4,13 +4,7 @@ namespace Aggressiveswallow\Controllers;
 
 use Aggressiveswallow\Tools\Template;
 use Symfony\Component\HttpFoundation\Response;
-use Aggressiveswallow\Persistors\DatabasePersistor;
-use Aggressiveswallow\Repositories\GenericRepository;
-use Aggressiveswallow\Queries\FullNavigationQuery;
-use Aggressiveswallow\Factories\NavItemFactory;
-use Aggressiveswallow\Factories\MenuItemFactory;
-use Aggressiveswallow\Queries\LatestLocationQuery;
-use Aggressiveswallow\Factories\LocationFactory;
+use Aggressiveswallow\Tools\Container;
 
 /**
  * Description of HomeController
@@ -21,19 +15,17 @@ class HomeController
         extends BaseController {
 
     public function indexAction() {
-        $pdo = new \PDO("mysql:host=localhost;dbname=web2", "root", "", array(
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-        ));
-        $persistor = new DatabasePersistor($pdo);
-        $repo = new GenericRepository($persistor);
-        $navigationRoot = $repo->read(new FullNavigationQuery($pdo, new NavItemFactory(new MenuItemFactory())));
-        $latestLocations = $repo->read(new LatestLocationQuery($pdo, new LocationFactory()));
-
         $t = new Template("homeViews/frontPage");
-        $t->locations = $latestLocations;
+
+        $repo = Container::make("GenericRepository");
+        $navQ = Container::make("navQuery");
+        $latestQ = Container::make("latestLocationQuery");
+
+        $navRoot = $repo->read($navQ);
+        $t->locations = $repo->read($latestQ);
 
         $t->pageTitle = "Home";
-        $t->nav = $navigationRoot->getChildren();
+        $t->nav = $navRoot->getChildren();
 
         return new Response($t, 200);
     }

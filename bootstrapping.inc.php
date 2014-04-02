@@ -1,5 +1,7 @@
 <?php
+
 use Aggressiveswallow\Tools\Autoloader;
+
 /**
  * @def (string) DS - Directory separator.
  */
@@ -18,3 +20,4 @@ $loader = new Autoloader();
 $loader->setSourceLocation("src");
 $loader->register();
 
+require 'register.inc.php';
