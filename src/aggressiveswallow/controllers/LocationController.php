@@ -30,7 +30,6 @@ class LocationController
 
     public function showAction($locationId) {
         $repository = Container::make("GenericRepository");
-        $session = Container::make("session");
 
         $locationQuery = Container::make("SingleLocationQuery");
         $locationQuery->setId((int) $locationId);
@@ -45,7 +44,7 @@ class LocationController
         $t->location = $location;
         $t->breadcrums = $repository->read($breadcrumsQuery);
         $t->pagetitle = $location->getAddress()->getFullStreetName();
-        $t->cart = $session->cart;
+        $t->cart = $this->session->cart;
 
         return new Response($t, 200);
     }

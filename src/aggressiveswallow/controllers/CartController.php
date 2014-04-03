@@ -2,12 +2,12 @@
 
 namespace Aggressiveswallow\Controllers;
 
-use Aggressiveswallow\Tools\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Aggressiveswallow\Tools\Container;
 use Aggressiveswallow\Helpers\Cart;
-use Aggressiveswallow\Repositories\BaseRepository;
-use Aggressiveswallow\Queries\SingleLocationQuery;
+use Aggressiveswallow\Helpers\AjaxResponses\CartMessage;
+use Aggressiveswallow\Tools\Responses\JsonResponse;
+use Aggressiveswallow\Tools\Template;
 
 /**
  * Simple cart controller for adding and removing products from the cart
@@ -36,45 +36,60 @@ class CartController
     private $locationQuery;
 
     public function __construct() {
+        parent::__construct();
         $this->repo = Container::make("genericRepository");
         $this->locationQuery = Container::make("singleLocationQuery");
         $this->initCart();
     }
 
     public function showAction() {
+        $t = new Template("cartViews/overview");
+        
         $body = "<pre>%s</pre>";
-
-        return new Response(sprintf($body, print_r($this->cart->getItems(), true)));
+        $reponse = sprintf($body, print_r($this->cart->getItems(), true));
+        return new Response($t);
     }
 
     public function addAction($locationId) {
+        $responseObj = new CartMessage();
         $location = $this->getLocation($locationId);
-        if (!$this->cart->has($location)) {
-            //Show error
+        if ($this->cart->has($location)) {
+            $responseObj->setHasError(true);
+            $responseObj->setMessage("U heeft dit item al in de winkelwagen.");
+
+            return new JsonResponse($responseObj);
         }
 
         $this->cart->add($location);
+        $m = "%s is toegevoegd aan uw reacties.";
+        $responseObj->setMessage(\sprintf($m, $location->getAddress()->getFullStreetName()));
 
-        return new Response("Product Added");
+        return new JsonResponse($responseObj);
     }
 
     public function removeAction($locationId) {
+        $responseObj = new CartMessage();
         $location = $this->getLocation($locationId);
         if (!$this->cart->has($location)) {
-            //Show error
+            $responseObj->setHasError(true);
+            $responseObj->setMessage("Het product om te verwijderen bestaat is niet in uw winkelwagen.");
+            return new JsonResponse($responseObj);
         }
+
         $this->cart->remove($location);
+        $m = "%s is verwijderd uit uw reactie lijst.";
+        $responseObj->setMessage(sprintf($m, $location->getAddress()->getFullStreetName()));
+        return new JsonResponse($responseObj);
     }
 
     private function initCart() {
-        $session = Container::make("session");
         $cart_name = Cart::SESSION_NAME;
 
-        if (!$session->has($cart_name)) {
-            $session->$cart_name = Container::make("cart");
+        if (!$this->session->has($cart_name)) {
+            $this->session->$cart_name = Container::make("cart");
         }
 
-        $this->cart = $session->$cart_name;
+        $this->cart = $this->session->$cart_name;
     }
 
     private function getLocation($locationId) {

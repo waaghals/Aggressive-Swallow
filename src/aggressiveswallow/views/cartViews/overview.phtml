@@ -1,0 +1,60 @@
+<?php
+
+use Aggressiveswallow\Helpers\buttonHelper as Button;
+
+/* @var $location \Aggressiveswallow\Models\Location */
+
+include VIEW_PATH . "partials/header.phtml";
+?>
+<div class="row">
+    <div class="page-header">
+        <h1>Winkelwagen <small>Overzicht</small></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-6 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Kpje</div>
+            <div class="panel-body">
+                <p>
+                    <strong>Postadres</strong><br/>
+                    Iets
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+include VIEW_PATH . "partials/footer.phtml";

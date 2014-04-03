@@ -16,11 +16,11 @@ class buttonHelper {
         $button = "<a href=\"%s\" class=\"btn btn-primary\" %s>%s</a>";
         if (!is_null($cart)) {
             if ($cart->has($location)) {
-                return \sprintf($button, "#", "disabled=\"disabled\"", "Gereageerd");
+                return \sprintf($button, "#", "disabled=\"disabled\"", "In winkelwagen");
             }
         }
         $uri = sprintf($link, $location->getId());
-        return \sprintf($button, $uri, "", "<span class=\"glyphicon glyphicon-shopping-cart\"></span> Reageer");
+        return \sprintf($button, $uri, "", "<span class=\"glyphicon glyphicon-shopping-cart\"></span> Kopen");
     }
 
 }

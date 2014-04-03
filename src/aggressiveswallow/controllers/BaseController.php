@@ -1,13 +1,22 @@
 <?php
 
 namespace Aggressiveswallow\Controllers;
+
 use Aggressiveswallow\Exceptions;
+use Aggressiveswallow\Tools\Container;
+
 /**
  * Description of baseController
  *
  * @author Patrick
  */
 abstract class BaseController {
+
+    protected $session;
+
+    public function __construct() {
+        $this->session = Container::make("session");
+    }
 
     /**
      * Call a controller action with named arguments.
@@ -17,7 +26,7 @@ abstract class BaseController {
      */
     public function callAction($actionName, array $arguments = array()) {
         try {
-             $reflection = new \ReflectionMethod($this, $actionName);
+            $reflection = new \ReflectionMethod($this, $actionName);
         } catch (\Exception $e) {
             $msg = sprintf("Action \"%s\" does not exist.", $actionName);
             throw new Exceptions\ServerException($msg, Exceptions\ServerException::NOT_FOUND);
@@ -38,12 +47,12 @@ abstract class BaseController {
 
         //Actually run the method/action
         $actionResponse = $reflection->invokeArgs($this, $pass);
-        
+
         if (!is_a($actionResponse, "Symfony\Component\HttpFoundation\Response")) {
             $msg = sprintf("Did not receive a valid response from controller action: %s", $actionName);
             throw new \Exception($msg);
         }
-        
+
         return $actionResponse;
     }
 
