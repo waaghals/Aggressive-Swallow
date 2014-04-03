@@ -100,5 +100,12 @@ class Cart {
     public function itemCount() {
         return count($this->items);
     }
-
+    
+    public function destroy(){
+        $this->items = array();
+    }
+    
+    public function hasItems() {
+        return $this->itemCount() > 0;
+    }
 }

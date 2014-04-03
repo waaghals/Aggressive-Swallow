@@ -44,6 +44,7 @@ class CartController
 
     public function showAction() {
         $t = new Template("cartViews/overview");
+        $t->cart = $this->cart;
         
         $body = "<pre>%s</pre>";
         $reponse = sprintf($body, print_r($this->cart->getItems(), true));

@@ -13,41 +13,54 @@ include VIEW_PATH . "partials/header.phtml";
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-8">
+        <?php
+        /* @var $cart \Aggressiveswallow\Helpers\Cart */
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table>
+        if ($cart->hasItems()):
+            ?>
+            <table class = "table table-hover">
+                <thead>
+                    <tr>
+                        <th>Straat</th>
+                        <th>Plaats</th>
+                        <th>Postcode</th>
+                        <th>Wijk</th>
+                        <th colspan="2">Koopprijs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($cart->getItems() as $product):
+                        /* @var $address \Aggressiveswallow\Models\Address */
+                        $address = $product->getAddress();
+
+                        $street = $address->getFullStreetName();
+                        $zip = $address->getZipcode();
+                        $city = $address->getCity();
+                        $neighborhood = $address->getNeighborhood();
+                        $price = $product->getFormattedPrice();
+
+                        $link = "<td><a href=\"/cart/remove/locationId=%s/\"><span class=\"glyphicon glyphicon-trash\"></span></a></td>";
+                        $remLink = sprintf($link, $product->getId());
+                        $row = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>%s</tr>";
+                        printf($row, $street, $city, $zip, $neighborhood, $price, $remLink);
+                    endforeach;
+                    ?>
+                    <tr class="active">
+                        <td colspan="3"></td>
+                        <td><strong>Totaal prijs: </strong></td>
+                        <td colspan="2"><?php echo $cart->getFormattedTotalPrice(); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            <?php
+        endif;
+        ?>
     </div>
-    <div class="col-xs-6 col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Kpje</div>
-            <div class="panel-body">
+    <div class = "col-xs-6 col-md-4">
+        <div class = "panel panel-default">
+            <div class = "panel-heading">Kpje</div>
+            <div class = "panel-body">
                 <p>
                     <strong>Postadres</strong><br/>
                     Iets
