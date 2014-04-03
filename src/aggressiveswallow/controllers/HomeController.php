@@ -19,9 +19,11 @@ class HomeController
 
         $repo = Container::make("GenericRepository");
         $latestQ = Container::make("latestLocationQuery");
+        $session = Container::make("session");
 
         $t->locations = $repo->read($latestQ);
         $t->pageTitle = "Home";
+        $t->cart = $session->cart;
 
         return new Response($t, 200);
     }

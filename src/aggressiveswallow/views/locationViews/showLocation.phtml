@@ -1,7 +1,5 @@
 <?php
-
-use Aggressiveswallow\Tools\Template;
-
+use Aggressiveswallow\Helpers\buttonHelper as Button;
 /* @var $location \Aggressiveswallow\Models\Location */
 
 function getLabel($l) {
@@ -17,11 +15,7 @@ function getLabel($l) {
             return sprintf($span, "danger", "D");
     }
 }
-include "../partials/header.phtml";
-//$header = new Template("partials/header");
-//$header->pageTitle = $location->getAddress()->getFullStreetName();
-//$header->breadcrums = $breadcrums;
-//echo $header;
+include VIEW_PATH . "partials/header.phtml";
 ?>
 <div class="row">
     <div class="page-header">
@@ -147,14 +141,11 @@ include "../partials/header.phtml";
                     <strong>Prijs</strong>
                     <?php echo $location->getFormattedPrice(); ?>
                 </p>
-                <a class="btn btn-primary">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                    In winkelwagen plaatsen
-                </a>
+                <?php echo Button::addToCart($location, $cart); ?>
             </div>
         </div>
     </div>
 </div>
 <?php
 $bottomJs = file_get_contents(VIEW_PATH . "locationViews/openFirstTab.js");
-include "../partials/footer.phtml";
+include VIEW_PATH . "partials/footer.phtml";

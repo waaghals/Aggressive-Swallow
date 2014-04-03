@@ -1,13 +1,21 @@
+<?php
+chdir(BASE_PATH);
+use Aggressiveswallow\Helpers\buttonHelper as Button;
+
+/* @var $location \Aggressiveswallow\Models\Location */
+?>
 <div class="col-lg-3 col-md-6">
     <div class="thumbnail">
         <img src="http://placehold.it/800x500" alt="">
         <div class="caption">
-            <h3><?php echo $street; ?></h3>
-            <p><?php echo $description; ?></p>
-            <p><?php echo $price; ?></p>
+            <h3><?php echo $location->getAddress()->getFullStreetName(); ?></h3>
+            <p><?php echo $location->getDescription(); ?></p>
+            <p><?php echo $location->getFormattedPrice(); ?></p>
             <p>
-                <a href="#" class="btn btn-primary">Kopen</a>
-                <a href="/location/show/locationId=<?php echo $id; ?>/" class="btn">meer info</a>
+                <?php
+                echo Button::addToCart($location, $cart);
+                ?>
+                <a href="/location/show/locationId=<?php echo $location->getId(); ?>/" class="btn">meer info</a>
             </p>
         </div>
     </div>

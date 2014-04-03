@@ -98,7 +98,9 @@ class Location
     public function setEnergyLabel($energyLabel) {
         $validLabels = array("a", "b", "c", "d");
         if (!in_array($energyLabel, $validLabels)) {
-            throw new \Exception("Not a valid label passed to setEnergyLabel");
+            $m = "Not a valid label passed to setEnergyLabel. Instead %s was given.";
+            
+            throw new \Exception(sprintf($m, $energyLabel));
         }
         $this->energyLabel = $energyLabel;
     }

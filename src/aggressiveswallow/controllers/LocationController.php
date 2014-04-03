@@ -29,27 +29,8 @@ class LocationController
     }
 
     public function showAction($locationId) {
-        /*
-          // Create a temp $location
-          $address = new Address();
-          $address->setCity("Arnhem");
-          $address->setHouseNumber(170);
-          $address->setStreet("Straatnaam");
-          $address->setZipcode("6000AA");
-
-          $cat = new MenuItem();
-          $cat->setName("Huizen");
-          $cat->setUri("/overview/show/category=huizen/");
-
-          $location = new Location();
-          $location->setAddress($address);
-          $location->setCategory($cat);
-          $location->setDescription("Fantastisch huis");
-          $location->setPrice(1000000);
-         */
         $repository = Container::make("GenericRepository");
-
-
+        $session = Container::make("session");
 
         $locationQuery = Container::make("SingleLocationQuery");
         $locationQuery->setId((int) $locationId);
@@ -64,6 +45,7 @@ class LocationController
         $t->location = $location;
         $t->breadcrums = $repository->read($breadcrumsQuery);
         $t->pagetitle = $location->getAddress()->getFullStreetName();
+        $t->cart = $session->cart;
 
         return new Response($t, 200);
     }
