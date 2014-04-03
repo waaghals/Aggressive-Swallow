@@ -29,12 +29,15 @@ INSERT INTO `address` (`id`, `street`, `housenumber`, `city`, `zipcode`, `neighb
 (25, 'Bredestraat', '170', 'Nijmegen', '6543ZZ', '');
 
 --
--- Gegevens worden uitgevoerd voor tabel `location`
+-- Gegevens worden uitgevoerd voor tabel `tree`
 --
 
-INSERT INTO `location` (`id`, `address_id`, `description`, `price`, `menuitem_id`, `energy`, `newbuild`, `area`, `yardarea`) VALUES
-(9, 24, 'Mooi rijtjeshuis in de rustige wijk De Laar West', 16000000, 75, 'a', 1, 34, 13),
-(10, 25, 'Prachtige oude villa genaamt Sancta Maria in de rustige wijk Hees', 200000000, 75, 'a', 0, 0, 0);
+INSERT INTO `tree` (`id`, `lft`, `rgt`) VALUES
+(134, 0, 9),
+(135, 1, 2),
+(136, 3, 8),
+(137, 4, 7),
+(138, 5, 6);
 
 --
 -- Gegevens worden uitgevoerd voor tabel `menuitem`
@@ -48,16 +51,14 @@ INSERT INTO `menuitem` (`id`, `tree_id`, `name`, `uri`) VALUES
 (78, 134, 'Navigation', '/');
 
 --
--- Gegevens worden uitgevoerd voor tabel `tree`
+-- Gegevens worden uitgevoerd voor tabel `location`
 --
 
-INSERT INTO `tree` (`id`, `lft`, `rgt`) VALUES
-(134, 0, 9),
-(135, 1, 2),
-(136, 3, 8),
-(137, 4, 7),
-(138, 5, 6);
+INSERT INTO `location` (`id`, `address_id`, `description`, `price`, `menuitem_id`, `energy`, `newbuild`, `area`, `yardarea`) VALUES
+(9, 24, 'Mooi rijtjeshuis in de rustige wijk De Laar West', 16000000, 75, 'a', 1, 34, 13),
+(10, 25, 'Prachtige oude villa genaamt Sancta Maria in de rustige wijk Hees', 200000000, 75, 'a', 0, 0, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
