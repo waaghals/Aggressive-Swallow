@@ -14,9 +14,14 @@ SELECT `l`.`id`             AS `location_id`
        , `c`.`id`           AS `menuitem_id` 
        , `c`.`name`         AS `menuitem_name` 
        , `c`.`uri`          AS `menuitem_uri` 
+       , `t`.`id`           AS `tree_id`
+       , `t`.`lft`          AS `tree_lft`
+       , `t`.`rgt`          AS `tree_rgt`
 FROM   `location` AS `l` 
        JOIN `address` AS `a` 
          ON ( `l`.`address_id` = `a`.`id` ) 
        JOIN `menuitem` AS `c` 
          ON ( `l`.`menuitem_id` = `c`.`id` ) 
+       JOIN `tree` AS `t`
+         ON ( `c`.`tree_id` = `t`.`id`)
 WHERE  `l`.`id` = :id 

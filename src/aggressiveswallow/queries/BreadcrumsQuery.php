@@ -59,7 +59,7 @@ class BreadcrumsQuery
      * @param \Aggressiveswallow\Models\MenuItem $mi
      */
     public function setMenuItem(MenuItem $mi) {
-        $this->id = $mi->getId();
+        $this->id = $mi->getTree()->getId();
     }
 
 }

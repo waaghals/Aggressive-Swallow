@@ -22,6 +22,7 @@ class HomeController
 
         $t->locations = $repo->read($latestQ);
         $t->pageTitle = "Home";
+        $t->cart = $this->session->cart;
 
         return new Response($t, 200);
     }

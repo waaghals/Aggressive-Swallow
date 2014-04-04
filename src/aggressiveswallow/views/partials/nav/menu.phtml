@@ -1,8 +1,13 @@
-<div class="collapse navbar-collapse">
-    <ul class="nav navbar-nav">
+<?php
+
+use Aggressiveswallow\Tools\Container;
+use Aggressiveswallow\Helpers\Cart;
+?>
+<div class = "collapse navbar-collapse">
+    <ul class = "nav navbar-nav">
         <?php
         $regularLink = "<li><a href=\"%s\">%s</a></li>";
-        $nav = Aggressiveswallow\Tools\Container::make("navigation");
+        $nav = Container::make("navigation");
         foreach ($nav as $navItem):
             /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
             if ($navItem->hasChildren()):
@@ -68,5 +73,27 @@
         <?php endif; ?>
         <li></li>
     </ul>
+
+    <?php
+    $itemCount = "Leeg";
+    $sess = Container::make("session");
+    
+    // Set the cwd to the basepath again.
+    // Else the autoloader tries to load from the wrong location.
+    chdir(BASE_PATH); 
+    $cart_name = Cart::SESSION_NAME;
+    if ($sess->has($cart_name)):
+        $count = $sess->$cart_name->itemCount();
+        if ($count > 0):
+            $itemCount = $count;
+        endif;
+    endif;
+    ?>
+    <p class="navbar-text navbar-right">
+        <span class="glyphicon glyphicon-shopping-cart"></span> 
+        <a href="/cart/show/" class="navbar-link">
+            <?php echo $itemCount; ?>
+        </a>
+    </p>
 </div>
 <!-- /.navbar-collapse -->
