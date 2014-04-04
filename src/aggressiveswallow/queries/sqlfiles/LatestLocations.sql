@@ -19,4 +19,5 @@ FROM   `location` AS `l`
          ON ( `l`.`address_id` = `a`.`id` ) 
        JOIN `menuitem` AS `c` 
          ON ( `l`.`menuitem_id` = `c`.`id` ) 
+WHERE `l`.`order_id` IS NULL
 LIMIT  10; 

@@ -25,3 +25,4 @@ FROM   `location` AS `l`
        JOIN `tree` AS `t`
          ON ( `c`.`tree_id` = `t`.`id`)
 WHERE  `l`.`id` = :id 
+AND  `l`.`order_id` IS NULL

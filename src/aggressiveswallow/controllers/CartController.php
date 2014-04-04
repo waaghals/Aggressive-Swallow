@@ -110,6 +110,7 @@ class CartController
 
         // Will update all the locations as well.
         $orderRepo->create($order);
+        $this->cart->destroy();
     }
 
     private function initCart() {

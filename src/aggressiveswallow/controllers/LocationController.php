@@ -36,6 +36,10 @@ class LocationController
 
         /* @var $location \Aggressiveswallow\Models\Location */
         $location = $repository->read($locationQuery);
+        
+        if(is_null($location)){
+            return new ErrorResponse("Requested location does not exists.");
+        }
 
         $breadcrumsQuery = Container::make("breadcrumsQuery");
         $breadcrumsQuery->setMenuItem($location->getMenuItem());
