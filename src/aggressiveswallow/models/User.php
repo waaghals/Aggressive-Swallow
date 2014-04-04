@@ -13,7 +13,6 @@ class User
     private $name;
     private $passhash;
     private $salt;
-    private $isAdmin;
 
     public function getName() {
         return $this->name;
@@ -51,13 +50,4 @@ class User
     public function setSalt($salt) {
         $this->salt = $salt;
     }
-
-    public function setIsAdmin($isAdmin) {
-        $this->isAdmin = $isAdmin;
-    }
-
-    public function getIsAdmin() {
-        return $this->isAdmin;
-    }
-
 }

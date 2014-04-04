@@ -90,6 +90,7 @@ class DatabasePersistor
         unset($data['id']);
 
         $fields = array_keys($data);
+
         // build query...
         $sql = sprintf("INSERT INTO `%s` ", $this->tableName);
 
@@ -100,6 +101,7 @@ class DatabasePersistor
         $sql .= " VALUES (:" . implode(", :", $fields) . ");";
 
         $stmt = $this->connection->prepare($sql);
+        var_dump($sql);
         $stmt->execute($data);
     }
 
@@ -121,6 +123,7 @@ class DatabasePersistor
         $sql .= " WHERE `id` = :id";
 
         $stmt = $this->connection->prepare($sql);
+        var_dump($sql);
         $stmt->execute($this->entityData);
     }
 

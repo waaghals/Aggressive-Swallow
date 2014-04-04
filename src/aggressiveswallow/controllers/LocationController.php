@@ -38,7 +38,7 @@ class LocationController
         $location = $repository->read($locationQuery);
 
         $breadcrumsQuery = Container::make("breadcrumsQuery");
-        $breadcrumsQuery->setMenuItem($location->getCategory());
+        $breadcrumsQuery->setMenuItem($location->getMenuItem());
 
         $t = new Template("locationViews/showLocation");
         $t->location = $location;

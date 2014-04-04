@@ -19,6 +19,7 @@ class GenericRepository
      * @var Aggressiveswallow\PersistanceInterface; 
      */
     private $persistor;
+    private $objReflector;
 
     public function __construct(PersistanceInterface $persistor) {
         $this->persistor = $persistor;
@@ -32,19 +33,18 @@ class GenericRepository
      * @throws \Exception When an unexpected object is in the entity.
      */
     public function create(BaseEntity $object) {
-        if (!$object->isValid()) {
-            throw new \InvalidArgumentException("Location is not valid to be stored.");
-        }
+        $this->objReflector = new \ReflectionObject($object);
 
-        $reflector = new \ReflectionObject($object);
-        $fields = $reflector->getProperties();
+        $fields = $this->objReflector->getProperties();
         $bindData = array();
 
         foreach ($fields as $field) {
+            if (!$this->shouldStoreProperty($field)) {
+                continue;
+            }
+
+            $fieldValue = $this->getPropertyValue($field, $object);
             $fieldName = $field->getName();
-            $methodName = sprintf("get%s", ucfirst($fieldName));
-            $method = $reflector->getMethod($methodName);
-            $fieldValue = $method->invoke($object);
 
             if (is_object($fieldValue)) {
                 $fieldReflector = new \ReflectionObject($fieldValue);
@@ -57,16 +57,22 @@ class GenericRepository
                 // The returned value from the method is a baseEntity.
                 // This means it is a foreignkey to an other field.
                 // Persist that entity first, then use that id for the foreignkey.
-                $this->create($fieldValue);
+                self::create($fieldValue);
+
+                // Set the reflector back to the original object
+                $this->objReflector = new \ReflectionObject($object);
 
                 $bindData[$fieldName . "_id"] = $fieldValue->getId();
-            } else {
+            } elseif (!is_null($fieldValue)){
+                // Do update/store empty fields, let the persistance layer
+                // deside what to user.
+ 
                 // Just a plain type
                 $bindData[$fieldName] = $fieldValue;
             }
         }
 
-        $this->persistor->setTableName($reflector->getShortName());
+        $this->persistor->setTableName($this->objReflector->getShortName());
         $idForObject = $this->persistor->persist($bindData);
 
         $object->setId($idForObject);
@@ -93,6 +99,50 @@ class GenericRepository
         // Because create works recursively it has to work with existing id's as well
         // Use a create to update the object.
         return $this->create($object);
+    }
+
+    private function shouldStoreProperty(\ReflectionProperty $property) {
+        if ($this->isVirtualProperty($property)) {
+            return false;
+        }
+
+        return $this->hasGetMethod($property);
+    }
+
+    private function hasGetMethod(\ReflectionProperty $property) {
+        $propName = $property->getName();
+        $methodName = sprintf("get%s", ucfirst($propName));
+
+        if (!$this->objReflector->hasMethod($methodName)) {
+            return false;
+        }
+
+        $method = $this->objReflector->getMethod($methodName);
+        return $method->isPublic();
+    }
+
+    private function isVirtualProperty($property) {
+        $phpDoc = new \phpDocumentor\Reflection\DocBlock($property);
+
+        if ($property->getName() == "locations") {
+            foreach ($phpDoc->getTags() as $tag) {
+                if($tag->getName() === "virtual"){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function getPropertyValue(\ReflectionProperty $property, BaseEntity $object) {
+        if ($this->hasGetMethod($property)) {
+            $propName = $property->getName();
+            $methodName = sprintf("get%s", ucfirst($propName));
+
+            $method = $this->objReflector->getMethod($methodName);
+            return $method->invoke($object);
+        }
     }
 
 }

@@ -4,7 +4,7 @@ SELECT `l`.`id`             AS `location_id`
        , `l`.`area`         AS `location_area` 
        , `l`.`yardarea`     AS `location_yardarea` 
        , `l`.`newbuild`     AS `location_newbuild` 
-       , `l`.`energy`       AS `location_energylabel` 
+       , `l`.`energylabel`  AS `location_energylabel` 
        , `a`.`id`           AS `address_id` 
        , `a`.`street`       AS `address_street` 
        , `a`.`housenumber`  AS `address_housenumber` 

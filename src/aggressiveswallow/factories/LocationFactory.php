@@ -44,7 +44,7 @@ class LocationFactory
 
         if (isset($data["menuitem_id"])) {
             $menuItem = $this->mif->create($data);
-            $location->setCategory($menuItem);
+            $location->setMenuItem($menuItem);
         }
 
         if (isset($data["address_id"])) {

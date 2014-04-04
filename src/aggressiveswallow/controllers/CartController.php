@@ -8,6 +8,9 @@ use Aggressiveswallow\Helpers\Cart;
 use Aggressiveswallow\Helpers\AjaxResponses\CartMessage;
 use Aggressiveswallow\Tools\Responses\JsonResponse;
 use Aggressiveswallow\Tools\Template;
+use Aggressiveswallow\Tools\Responses\ErrorResponse;
+use Aggressiveswallow\Models\Order;
+use Aggressiveswallow\Models\User;
 
 /**
  * Simple cart controller for adding and removing products from the cart
@@ -45,7 +48,7 @@ class CartController
     public function showAction() {
         $t = new Template("cartViews/overview");
         $t->cart = $this->cart;
-        
+
         $body = "<pre>%s</pre>";
         $reponse = sprintf($body, print_r($this->cart->getItems(), true));
         return new Response($t);
@@ -83,6 +86,32 @@ class CartController
         return new JsonResponse($responseObj);
     }
 
+    public function buyAction() {
+        if (!$this->cart->hasItems()) {
+            return new ErrorResponse("De winkelwagen is leeg, dus er valt niets te kopen.");
+        }
+
+        $order = new Order();
+        foreach ($this->cart->getItems() as $location) {
+            /* @var $location \Aggressiveswallow\Models\Location */
+
+            // Set the binding both ways.
+            $location->setOrder($order);
+            $order->addLocation($location);
+        }
+        $testUser = new User();
+        $testUser->setId(1);
+        $testUser->setName("Patrick");
+        $testUser->setSalt("fdgsFtfRD45DSe#S%\$ÎFGVHJVSsdfgd");
+        $order->setUser($testUser);
+
+        $orderRepo = Container::make("orderRepository");
+        /* @var $orderRepo \Aggressiveswallow\Repositories\OrderRepository */
+
+        // Will update all the locations as well.
+        $orderRepo->create($order);
+    }
+
     private function initCart() {
         $cart_name = Cart::SESSION_NAME;
 
@@ -107,6 +136,11 @@ class CartController
         }
 
         return $location;
+    }
+
+    public function debugAction() {
+        $reponse = sprintf("<pre>%s</pre>", print_r($this->cart->getItems(), true));
+        return new Response($reponse);
     }
 
 }

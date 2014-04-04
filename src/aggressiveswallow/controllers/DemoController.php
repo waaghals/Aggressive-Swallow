@@ -118,5 +118,15 @@ class DemoController
         }
         $this->body .= "</ul>";
     }
+    
+    public function testAction() {
+      //  ob_start();
+        $b = new \Aggressiveswallow\Helpers\B();
+        $b->test("Controller");
+       // $content = ob_get_contents();
+       
+        
+        return new Response();
+    }
 
 }

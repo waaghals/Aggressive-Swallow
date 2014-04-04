@@ -127,10 +127,10 @@ include VIEW_PATH . "partials/header.phtml";
             <div class="panel-body">
                 <p>
                     <strong>Categorie: </strong> 
-                    <?php echo $location->getCategory()->getName(); ?>
+                    <?php echo $location->getMenuItem()->getName(); ?>
                 </p>
 
-                <a class="btn btn-default" href="<?php echo $location->getCategory()->getUri(); ?>">Meer aanbod in deze categorie.</a>
+                <a class="btn btn-default" href="<?php echo $location->getMenuItem()->getUri(); ?>">Meer aanbod in deze categorie.</a>
             </div>
         </div>
 
