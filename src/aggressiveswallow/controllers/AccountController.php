@@ -36,10 +36,10 @@ class AccountController
             $r = new Response();
             $r->mustRevalidate();
             $r->setLastModified();
-            $r->setContent("Login successfull", Response::HTTP_ACCEPTED);
+            $r->setContent("<html><head><meta http-equiv='refresh' content='3;url=../../'></head><body>Login successfull, Welcome ".$_SESSION['user']->getName() , Response::HTTP_ACCEPTED);
 
             return $r;
-        } elseif(isset($_POST["submit"])) {
+        } elseif (isset($_POST["submit"])) {
             $this->loginError = true;
         }
 
@@ -92,7 +92,7 @@ class AccountController
             // No user found
             return false;
         }
-
+        $_SESSION['user']=$user;
         return $user->hasPassword($_POST["password"]);
     }
 

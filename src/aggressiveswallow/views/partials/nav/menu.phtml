@@ -59,6 +59,14 @@
                 <li><a href="#">Level 1</a></li>
             </ul>
         </li>
+        <?php if(isset($_SESSION['user'])): ?>
+        <li><a href="/Account/Logout">Logout</a></li>
+        <li>Welcome <?php echo sprintf("%s", $_SESSION['user']->getName()); ?></li>
+        <?php else: ?>
+        <li><a href="/Account/Login">Login</a></li>
+        <li><a href="/Account/Register">Register</a></li>
+        <?php endif; ?>
+        <li></li>
     </ul>
 </div>
 <!-- /.navbar-collapse -->
