@@ -2,8 +2,9 @@
 
 namespace Aggressiveswallow\Controllers;
 
-use Aggressiveswallow\Exceptions;
 use Aggressiveswallow\Tools\Container;
+use Aggressiveswallow\Tools\Responses\ErrorResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Description of baseController
@@ -28,8 +29,7 @@ abstract class BaseController {
         try {
             $reflection = new \ReflectionMethod($this, $actionName);
         } catch (\Exception $e) {
-            $msg = sprintf("Action \"%s\" does not exist.", $actionName);
-            throw new Exceptions\ServerException($msg, Exceptions\ServerException::NOT_FOUND);
+            return new ErrorResponse(sprintf("Action \"%s\" does not exist.", $actionName), Response::HTTP_NOT_FOUND);
         }
 
         $pass = array();
