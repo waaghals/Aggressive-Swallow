@@ -2,6 +2,7 @@
 
 use Aggressiveswallow\Tools\Container;
 use Aggressiveswallow\Helpers\Cart;
+use \Aggressiveswallow\Helpers\Loggedin;
 ?>
 <div class = "collapse navbar-collapse">
     <ul class = "nav navbar-nav">
@@ -63,24 +64,16 @@ use Aggressiveswallow\Helpers\Cart;
                 </li>
                 <li><a href="#">Level 1</a></li>
             </ul>
-        </li>
-        <?php if(isset($_SESSION['user'])): ?>
-        <li><a href="/Account/Logout">Logout</a></li>
-        <li>Welcome <?php echo sprintf("%s", $_SESSION['user']->getName()); ?></li>
-        <?php else: ?>
-        <li><a href="/Account/Login">Login</a></li>
-        <li><a href="/Account/Register">Register</a></li>
-        <?php endif; ?>
-        <li></li>
+        </li> 
     </ul>
 
     <?php
     $itemCount = "Leeg";
     $sess = Container::make("session");
-    
+
     // Set the cwd to the basepath again.
     // Else the autoloader tries to load from the wrong location.
-    chdir(BASE_PATH); 
+    chdir(BASE_PATH);
     $cart_name = Cart::SESSION_NAME;
     if ($sess->has($cart_name)):
         $count = $sess->$cart_name->itemCount();
@@ -95,5 +88,25 @@ use Aggressiveswallow\Helpers\Cart;
             <?php echo $itemCount; ?>
         </a>
     </p>
+
+    <?php 
+    $login_name = Loggedin::SESSION_NAME;
+    if ($sess->has($login_name)): 
+        ?>
+        <p class="navbar-text navbar-right">
+            <a href="/Account/Logout">Logout</a>
+        </p>
+        <p class="navbar-text navbar-right">
+            Welcome <?php echo sprintf("%s", $sess->$login_name->getName()); ?>
+        </p>
+    <?php else: ?>
+        <p class="navbar-text navbar-right">
+            <a href="/Account/Login">Login</a>
+        </p>
+        <p class="navbar-text navbar-right">
+            <a href="/Account/Register">Register</a>
+        </p>
+    <?php endif;
+    ?>
 </div>
 <!-- /.navbar-collapse -->
