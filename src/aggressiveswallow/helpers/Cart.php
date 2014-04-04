@@ -105,7 +105,7 @@ class Cart {
         $this->items = array();
     }
     
-    public function hasItems() {
-        return $this->itemCount() > 0;
+    public function isEmpty() {
+        return $this->itemCount() < 1;
     }
 }

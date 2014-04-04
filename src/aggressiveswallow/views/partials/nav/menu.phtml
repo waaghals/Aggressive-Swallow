@@ -69,10 +69,10 @@ use Aggressiveswallow\Helpers\Cart;
     <?php
     $itemCount = "Leeg";
     $sess = Container::make("session");
-    
+
     // Set the cwd to the basepath again.
     // Else the autoloader tries to load from the wrong location.
-    chdir(BASE_PATH); 
+    chdir(BASE_PATH);
     $cart_name = Cart::SESSION_NAME;
     if ($sess->has($cart_name)):
         $count = $sess->$cart_name->itemCount();
@@ -83,9 +83,25 @@ use Aggressiveswallow\Helpers\Cart;
     ?>
     <p class="navbar-text navbar-right">
         <span class="glyphicon glyphicon-shopping-cart"></span> 
-        <a href="/cart/show/" class="navbar-link">
-            <?php echo $itemCount; ?>
-        </a>
+        <?php
+        $itemCount = "Leeg";
+        $sess = Container::make("session");
+
+        // Set the cwd to the basepath again.
+        // Else the autoloader tries to load from the wrong location.
+        chdir(BASE_PATH);
+        $cart_name = Cart::SESSION_NAME;
+        if ($sess->has($cart_name)):
+            $count = $sess->$cart_name->itemCount();
+            if ($count > 0):
+                $text = sprintf(($count == 1 ? " %s item" : "%s items"), $count);
+                echo sprintf("<a href=\"/cart/show/\" class=\"navbar-link\">%s</a>", $text);
+            else:
+                echo "Leeg";
+            endif;
+        endif;
+        ?>
+        
     </p>
 </div>
 <!-- /.navbar-collapse -->

@@ -51,6 +51,9 @@ class CartController
 
         $body = "<pre>%s</pre>";
         $reponse = sprintf($body, print_r($this->cart->getItems(), true));
+        if($this->cart->isEmpty()){
+            return new ErrorResponse("Winkelwagen is leeg.");
+        }
         return new Response($t);
     }
 
@@ -85,34 +88,7 @@ class CartController
         $responseObj->setMessage(sprintf($m, $location->getAddress()->getFullStreetName()));
         return new JsonResponse($responseObj);
     }
-
-    public function buyAction() {
-        if (!$this->cart->hasItems()) {
-            return new ErrorResponse("De winkelwagen is leeg, dus er valt niets te kopen.");
-        }
-
-        $order = new Order();
-        foreach ($this->cart->getItems() as $location) {
-            /* @var $location \Aggressiveswallow\Models\Location */
-
-            // Set the binding both ways.
-            $location->setOrder($order);
-            $order->addLocation($location);
-        }
-        $testUser = new User();
-        $testUser->setId(1);
-        $testUser->setName("Patrick");
-        $testUser->setSalt("fdgsFtfRD45DSe#S%\$ÎFGVHJVSsdfgd");
-        $order->setUser($testUser);
-
-        $orderRepo = Container::make("orderRepository");
-        /* @var $orderRepo \Aggressiveswallow\Repositories\OrderRepository */
-
-        // Will update all the locations as well.
-        $orderRepo->create($order);
-        $this->cart->destroy();
-    }
-
+    
     private function initCart() {
         $cart_name = Cart::SESSION_NAME;
 

@@ -6,6 +6,11 @@ use Aggressiveswallow\Helpers\buttonHelper as Button;
 
 include VIEW_PATH . "partials/header.phtml";
 ?>
+<ol class="breadcrumb">
+    <li><a href="/">Webmakelaar</a></li>
+    <li><a href="/cart/show/">Winkelwagen</a></li>
+    <li><a href="/cart/show/">Overzicht</a></li>
+</ol>
 <div class="row">
     <div class="page-header">
         <h1>Winkelwagen <small>Overzicht</small></h1>
@@ -16,7 +21,7 @@ include VIEW_PATH . "partials/header.phtml";
         <?php
         /* @var $cart \Aggressiveswallow\Helpers\Cart */
 
-        if ($cart->hasItems()):
+        if (!$cart->isEmpty()):
             ?>
             <table class = "table table-hover">
                 <thead>
@@ -59,11 +64,10 @@ include VIEW_PATH . "partials/header.phtml";
     </div>
     <div class = "col-xs-6 col-md-4">
         <div class = "panel panel-default">
-            <div class = "panel-heading">Kpje</div>
+            <div class = "panel-heading">Kopen</div>
             <div class = "panel-body">
                 <p>
-                    <strong>Postadres</strong><br/>
-                    Iets
+                    <a href="/cart/buy/" class="btn btn-primary">Aankoop bevestigen</a>
                 </p>
             </div>
         </div>
