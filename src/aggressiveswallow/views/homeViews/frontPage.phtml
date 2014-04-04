@@ -35,5 +35,5 @@ if (count($locations) > 0):
     echo "</div> <!-- /.row -->";
 endif;
 
-$footer = new Template("partials/footer");
-echo $footer;
+$bottomJs[] = file_get_contents(VIEW_PATH . "commonScripts/ajaxReload.js");
+include VIEW_PATH . "partials/footer.phtml";

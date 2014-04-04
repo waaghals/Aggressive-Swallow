@@ -61,7 +61,11 @@ class CheckoutController
 
         // Will update all the locations as well.
         $orderRepo->create($order);
+        $t = new Template("cartViews/success");
+        $t->cart = clone $this->cart;
         $this->cart->destroy();
+        
+        return new Response($t);
     }
 
     private function initCart() {

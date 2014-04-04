@@ -49,11 +49,6 @@ class CartController
         $t = new Template("cartViews/overview");
         $t->cart = $this->cart;
 
-        $body = "<pre>%s</pre>";
-        $reponse = sprintf($body, print_r($this->cart->getItems(), true));
-        if($this->cart->isEmpty()){
-            return new ErrorResponse("Winkelwagen is leeg.");
-        }
         return new Response($t);
     }
 

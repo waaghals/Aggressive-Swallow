@@ -13,7 +13,7 @@ class buttonHelper {
 
     public static function addToCart(Location $location, Cart $cart) {
         $link = "/cart/add/locationId=%s/";
-        $button = "<a href=\"%s\" class=\"btn btn-primary\" %s>%s</a>";
+        $button = "<a href=\"%s\" class=\"btn btn-primary ajax-reload\" %s>%s</a>";
         if (!is_null($cart)) {
             if ($cart->has($location)) {
                 return \sprintf($button, "#", "disabled=\"disabled\"", "In winkelwagen");

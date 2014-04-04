@@ -147,5 +147,6 @@ include VIEW_PATH . "partials/header.phtml";
     </div>
 </div>
 <?php
-$bottomJs = file_get_contents(VIEW_PATH . "locationViews/openFirstTab.js");
+$bottomJs[] = file_get_contents(VIEW_PATH . "locationViews/openFirstTab.js");
+$bottomJs[] = file_get_contents(VIEW_PATH . "commonScripts/ajaxReload.js");
 include VIEW_PATH . "partials/footer.phtml";

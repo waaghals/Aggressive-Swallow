@@ -18,7 +18,7 @@ include VIEW_PATH . "partials/header.phtml";
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-8">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" action="/checkout/confirm/">
             <?php
             if (!Login::isLoggedIn()):
                 ?>

@@ -17,12 +17,13 @@ include VIEW_PATH . "partials/header.phtml";
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-8">
-        <?php
-        /* @var $cart \Aggressiveswallow\Helpers\Cart */
 
-        if (!$cart->isEmpty()):
-            ?>
+    <?php
+    /* @var $cart \Aggressiveswallow\Helpers\Cart */
+
+    if (!$cart->isEmpty()):
+        ?>
+        <div class="col-xs-12 col-sm-6 col-md-8">
             <table class = "table table-hover">
                 <thead>
                     <tr>
@@ -45,7 +46,7 @@ include VIEW_PATH . "partials/header.phtml";
                         $neighborhood = $address->getNeighborhood();
                         $price = $product->getFormattedPrice();
 
-                        $link = "<td><a href=\"/cart/remove/locationId=%s/\"><span class=\"glyphicon glyphicon-trash\"></span></a></td>";
+                        $link = "<td><a href=\"/cart/remove/locationId=%s/\" class=\"ajax-reload\"><span class=\"glyphicon glyphicon-trash\"></span></a></td>";
                         $remLink = sprintf($link, $product->getId());
                         $row = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>%s</tr>";
                         printf($row, $street, $city, $zip, $neighborhood, $price, $remLink);
@@ -58,20 +59,32 @@ include VIEW_PATH . "partials/header.phtml";
                     </tr>
                 </tbody>
             </table>
-            <?php
-        endif;
-        ?>
-    </div>
-    <div class = "col-xs-6 col-md-4">
-        <div class = "panel panel-default">
-            <div class = "panel-heading">Kopen</div>
-            <div class = "panel-body">
-                <p>
-                    <a href="/cart/buy/" class="btn btn-primary">Aankoop bevestigen</a>
-                </p>
+        </div>
+        <div class = "col-xs-6 col-md-4">
+            <div class = "panel panel-default">
+                <div class = "panel-heading">Kopen</div>
+                <div class = "panel-body">
+                    <p>
+                        <a href="/checkout/payment/" class="btn btn-primary">Afrekenen</a>
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
+        <?php
+    else:
+        ?>
+        <div class="alert alert-danger fade in">
+            <h4>Lege winkelwagen</h4>
+            <p>Uw winkelwagen bevat geen producten.</p>
+            <p>
+                <a href="/" class="btn btn-default">Verder winkelen</a>
+            </p>
+        </div>
+    <?php
+    endif;
+    ?>
+
 </div>
 <?php
+$bottomJs[] = file_get_contents(VIEW_PATH . "commonScripts/ajaxReload.js");
 include VIEW_PATH . "partials/footer.phtml";
