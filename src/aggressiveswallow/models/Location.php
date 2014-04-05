@@ -3,6 +3,7 @@
 namespace Aggressiveswallow\Models;
 
 use Aggressiveswallow\Models\MenuItem;
+use Aggressiveswallow\Models\Order;
 
 /**
  * Basic items of a product
@@ -16,7 +17,7 @@ class Location
      *
      * @var Aggressiveswallow\Models\MenuItem
      */
-    private $category;
+    private $menuItem;
 
     /**
      *
@@ -49,11 +50,17 @@ class Location
     private $newBuild;
 
     /**
+     *
+     * @var \Aggressiveswallow\Models\Order
+     */
+    private $order;
+
+    /**
      * 
      * @return Aggressiveswallow\Models\MenuItem
      */
-    public function getCategory() {
-        return $this->category;
+    public function getMenuItem() {
+        return $this->menuItem;
     }
 
     /**
@@ -68,8 +75,8 @@ class Location
      * 
      * @param \Aggressiveswallow\Models\MenuItem $category
      */
-    public function setCategory(MenuItem $category) {
-        $this->category = $category;
+    public function setMenuItem(MenuItem $category) {
+        $this->menuItem = $category;
     }
 
     /**
@@ -80,17 +87,6 @@ class Location
         $this->address = $address;
     }
 
-    /**
-     * 
-     * @return boolean
-     */
-    public function isValid() {
-        if (parent::isValid()) {
-            return ($this->address != null);
-        }
-        return false;
-    }
-
     public function getEnergyLabel() {
         return $this->energyLabel;
     }
@@ -98,7 +94,9 @@ class Location
     public function setEnergyLabel($energyLabel) {
         $validLabels = array("a", "b", "c", "d");
         if (!in_array($energyLabel, $validLabels)) {
-            throw new \Exception("Not a valid label passed to setEnergyLabel");
+            $m = "Not a valid label passed to setEnergyLabel. Instead %s was given.";
+
+            throw new \Exception(sprintf($m, $energyLabel));
         }
         $this->energyLabel = $energyLabel;
     }
@@ -125,6 +123,14 @@ class Location
 
     public function setNewBuild($newBuild) {
         $this->newBuild = $newBuild;
+    }
+
+    public function getOrder() {
+        return $this->order;
+    }
+
+    public function setOrder(Order $order) {
+        $this->order = $order;
     }
 
 }

@@ -4,7 +4,7 @@ SELECT `l`.`id`             AS `location_id`
        , `l`.`area`         AS `location_area` 
        , `l`.`yardarea`     AS `location_yardarea` 
        , `l`.`newbuild`     AS `location_newbuild` 
-       , `l`.`energy`       AS `location_energylabel` 
+       , `l`.`energylabel`  AS `location_energylabel` 
        , `a`.`id`           AS `address_id` 
        , `a`.`street`       AS `address_street` 
        , `a`.`housenumber`  AS `address_housenumber` 
@@ -19,4 +19,5 @@ FROM   `location` AS `l`
          ON ( `l`.`address_id` = `a`.`id` ) 
        JOIN `menuitem` AS `c` 
          ON ( `l`.`menuitem_id` = `c`.`id` ) 
+WHERE `l`.`order_id` IS NULL
 LIMIT  10; 

@@ -6,5 +6,5 @@ FROM   `tree` AS `node`
        JOIN `menuitem` AS `m` 
          ON ( `m`.`tree_id` = `parent`.`id` ) 
 WHERE  `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` 
-   AND `node`.`id` = 137 
+   AND `node`.`id` = :id
 ORDER  BY `node`.`lft` 

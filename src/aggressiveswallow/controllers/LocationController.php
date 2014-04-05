@@ -29,41 +29,31 @@ class LocationController
     }
 
     public function showAction($locationId) {
-        /*
-          // Create a temp $location
-          $address = new Address();
-          $address->setCity("Arnhem");
-          $address->setHouseNumber(170);
-          $address->setStreet("Straatnaam");
-          $address->setZipcode("6000AA");
-
-          $cat = new MenuItem();
-          $cat->setName("Huizen");
-          $cat->setUri("/overview/show/category=huizen/");
-
-          $location = new Location();
-          $location->setAddress($address);
-          $location->setCategory($cat);
-          $location->setDescription("Fantastisch huis");
-          $location->setPrice(1000000);
-         */
         $repository = Container::make("GenericRepository");
-
-
 
         $locationQuery = Container::make("SingleLocationQuery");
         $locationQuery->setId((int) $locationId);
 
         /* @var $location \Aggressiveswallow\Models\Location */
         $location = $repository->read($locationQuery);
+        
+        if(is_null($location)){
+            return new ErrorResponse("Requested location does not exists.");
+        }
 
         $breadcrumsQuery = Container::make("breadcrumsQuery");
-        $breadcrumsQuery->setMenuItem($location->getCategory());
+        $breadcrumsQuery->setMenuItem($location->getMenuItem());
+        $breadcrums = $repository->read($breadcrumsQuery);
+        $lastBreadcrum = new MenuItem();
+        $lastBreadcrum->setName($location->getAddress()->getFullStreetName());
+        $lastBreadcrum->setUri(sprintf("/location/show/locationId=%s/#", $locationId));
+        $breadcrums[] = $lastBreadcrum;
 
         $t = new Template("locationViews/showLocation");
         $t->location = $location;
-        $t->breadcrums = $repository->read($breadcrumsQuery);
+        $t->breadcrums = $breadcrums;
         $t->pagetitle = $location->getAddress()->getFullStreetName();
+        $t->cart = $this->session->cart;
 
         return new Response($t, 200);
     }

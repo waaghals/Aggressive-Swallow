@@ -5,6 +5,7 @@ namespace Aggressiveswallow\Controllers;
 use Aggressiveswallow\Tools\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Aggressiveswallow\Tools\Container;
+use Aggressiveswallow\Helpers\LoginHelper as Login;
 
 /**
  * Description of HomeController
@@ -14,46 +15,86 @@ use Aggressiveswallow\Tools\Container;
 class AccountController
         extends BaseController {
 
-    private $loginError;
+    private $error;
 
     public function __construct() {
-        $this->loginError = false;
+        $this->error = null;
+        parent::__construct();
     }
 
     public function registerAction() {
-        if (isset($_POST["submit"]) && $this->isValidRegistration()) {
-            $r = new Response();
-            $r->mustRevalidate();
-            $r->setLastModified();
-            $r->setContent("Registration successfull", Response::HTTP_CREATED);
-            return $r;
+        if (isset($_POST["submit"])) {
+            $existingUser = Login::getUserByName($_POST["username"]);
+            if (!is_null($existingUser)) {
+                $this->error = "Gebruikersnaam bestaat al.";
+            } else if ($_POST["password"] !== $_POST["password2"]) {
+                $this->error = "Wachtwoorden komen niet overeen.";
+            } else if (\strlen($_POST["password"]) < 4) {
+                $this->error = "Wachtwoord is tekort.";
+            } else if (!isset($_POST["tos"])) {
+                $this->error = "U bent vergeten het vakje aan te vinken.";
+            } else {
+                /* @var $userFactory \Aggressiveswallow\Factories\UserFactory 
+                 * @var $repo \Aggressiveswallow\Repositories\GenericRepository
+                 */
+                $userFactory = Container::make("userFactory");
+                $repo = Container::make("genericRepository");
+                $user = $userFactory->createFromUserAndPass($_POST["username"], $_POST["password"]);
+                $repo->create($user);
+
+                $t = new Template("common\message");
+                $t->pageTitle = "Registreren gelukt";
+                $t->title = "Registreren";
+                $t->shortMessage = "gelukt";
+                $t->description = "U bent met success geregistreerd.";
+                $t->class = "success";
+                return new Response($t, Response::HTTP_CREATED);
+            }
         }
         return $this->showRegistrationForm();
     }
 
     public function loginAction() {
-        if (isset($_POST["submit"]) && $this->isValidLogin()) {
-            $r = new Response();
-            $r->mustRevalidate();
-            $r->setLastModified();
-            $r->setContent("<html><head><meta http-equiv='refresh' content='3;url=../../'></head><body>Login successfull, Welcome ".$_SESSION['user']->getName() , Response::HTTP_ACCEPTED);
 
-            return $r;
+        if (isset($_POST["submit"]) && Login::isValidLogin($_POST["username"], $_POST["password"])) {
+
+            $this->session->user = Login::getUserByName($_POST["username"]);
+            $this->session->isLoggedIn = true;
+            $this->session->regenerateId();
+
+            $t = new Template("common\message");
+            $t->pageTitle = "Inlogd";
+            $t->title = "Inloggen";
+            $t->shortMessage = "gelukt";
+            $t->description = "U bent met success ingelogd.";
+            $t->class = "success";
+            return new Response($t, Response::HTTP_OK);
         } elseif (isset($_POST["submit"])) {
-            $this->loginError = true;
+            $this->error = "Gebruikersnaam of wachtwoord is verkeerd.";
         }
 
         return $this->showLoginForm();
     }
 
+    public function logoutAction() {
+        $this->session->isLoggedin = false;
+        $this->session->destroy();
+        $this->session->start();
+
+        $t = new Template("common\message");
+        $t->pageTitle = "Uitgelogd";
+        $t->title = "Uitloggen";
+        $t->shortMessage = "gelukt";
+        $t->description = "U bent met success uitgelogd.";
+        $t->class = "success";
+        return new Response($t, Response::HTTP_OK);
+    }
+
     private function showRegistrationForm() {
         $t = new Template("accountViews/registration");
-
-        $repo = Container::make("GenericRepository");
-        $latestQ = Container::make("latestLocationQuery");
-
-        $t->locations = $repo->read($latestQ);
-        $t->pageTitle = "Home";
+        if (!is_null($this->error)) {
+            $t->error = $this->error;
+        }
 
         return new Response($t, 200);
     }
@@ -61,39 +102,13 @@ class AccountController
     private function showLoginForm() {
 
         $t = new Template("accountViews/login");
-
-        $repo = Container::make("GenericRepository");
-        $latestQ = Container::make("latestLocationQuery");
-
-        $t->locations = $repo->read($latestQ);
-        $t->pageTitle = "Home";
-        if ($this->loginError) {
-            $t->error = "Gebruikersnaam of wachtwoord is verkeerd.";
+        if (!is_null($this->error)) {
+            $t->error = $this->error;
         }
 
-        $this->loginError = false;
+        $this->error = false;
 
         return new Response($t, 200);
-    }
-
-    private function isValidRegistration() {
-        return true;
-    }
-
-    public function isValidLogin() {
-        $repo = Container::make("genericRepository");
-        $q = Container::make("userByNameQuery");
-        $q->setName($_POST["name"]);
-
-        /* @var $user \Aggressiveswallow\Models\User */
-        $user = $repo->read($q);
-
-        if ($user->getName() == null) {
-            // No user found
-            return false;
-        }
-        $_SESSION['user']=$user;
-        return $user->hasPassword($_POST["password"]);
     }
 
 }

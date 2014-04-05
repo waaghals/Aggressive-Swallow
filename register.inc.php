@@ -13,6 +13,9 @@ use Aggressiveswallow\Repositories\GenericRepository;
 use Aggressiveswallow\Queries\BreadcrumsQuery;
 use Aggressiveswallow\Factories\UserFactory;
 use Aggressiveswallow\Queries\UserByNameQuery;
+use Aggressiveswallow\Tools\Session;
+use Aggressiveswallow\Helpers\Cart;
+use Aggressiveswallow\Repositories\OrderRepository;
 
 // Register the objects
 Container::registerSingleton("db", function() {
@@ -86,8 +89,21 @@ Container::registerSingleton("userFactory", function() {
     return new UserFactory();
 });
 
-Container::registerSingleton("userByNameQuery", function() {
+Container::register("userByNameQuery", function() {
     $db = Container::make("db");
     $factory = Container::make("userFactory");
     return new UserByNameQuery($db, $factory);
+});
+
+Container::registerSingleton("session", function() {
+    return new Session();
+});
+
+Container::registerSingleton("cart", function() {
+    return new Cart();
+});
+
+Container::register("orderRepository", function() {
+    $persistance = Container::make("persistor");
+    return new OrderRepository($persistance);
 });

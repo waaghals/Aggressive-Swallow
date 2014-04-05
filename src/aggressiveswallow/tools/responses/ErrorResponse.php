@@ -12,7 +12,7 @@ use Aggressiveswallow\Tools\Template;
 class ErrorResponse
         extends Response {
 
-    public function __construct($message, $code) {
+    public function __construct($message, $code = Response::HTTP_OK) {
         $t = new Template("errors/Fatal");
         $t->code = $code;
         $t->type = self::$statusTexts[$code];

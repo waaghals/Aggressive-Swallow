@@ -13,7 +13,7 @@ use Aggressiveswallow\Factories\LocationFactory;
 class SingleLocationQuery
         extends BaseQuery
         implements ResultQueryInterface {
-    
+
     /**
      *
      * @var int
@@ -25,26 +25,26 @@ class SingleLocationQuery
      * @var \Aggressiveswallow\Factories\LocationFactory
      */
     private $factory;
-    
+
     public function __construct(\PDO $connection, LocationFactory $f) {
         parent::__construct($connection);
         $this->factory = $f;
     }
-    
 
     public function fetch() {
 
-        if(!isset($this->id)){
+        if (!isset($this->id)) {
             throw new \Exception("Id not set.");
         }
         $sql = file_get_contents(VENDOR_PATH . "queries/sqlfiles/SingleLocation.sql");
         $stmt = $this->connection->prepare($sql);
         $stmt->execute(array("id" => $this->id));
 
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $this->factory->create($row);
+        if ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            return $this->factory->create($row);
+        } return null;
     }
-    
+
     public function getId() {
         return $this->id;
     }
@@ -52,7 +52,5 @@ class SingleLocationQuery
     public function setId($id) {
         $this->id = $id;
     }
-
-
 
 }

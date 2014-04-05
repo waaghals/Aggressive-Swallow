@@ -13,7 +13,6 @@ class User
     private $name;
     private $passhash;
     private $salt;
-    private $isAdmin;
 
     public function getName() {
         return $this->name;
@@ -40,7 +39,7 @@ class User
 
     public function hasPassword($password) {
         $thisHash = $this->getPassHashForPassword($password);
-        
+
         return strtolower($thisHash) == strtolower($this->passhash);
     }
 
@@ -52,12 +51,8 @@ class User
         $this->salt = $salt;
     }
 
-    public function setIsAdmin($isAdmin) {
-        $this->isAdmin = $isAdmin;
-    }
-
-    public function getIsAdmin() {
-        return $this->isAdmin;
+    public function setPassword($password) {
+        $this->passhash = $this->getPassHashForPassword($password);
     }
 
 }

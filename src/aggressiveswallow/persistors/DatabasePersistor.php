@@ -90,6 +90,7 @@ class DatabasePersistor
         unset($data['id']);
 
         $fields = array_keys($data);
+
         // build query...
         $sql = sprintf("INSERT INTO `%s` ", $this->tableName);
 
