@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class BaseController {
 
+    /**
+     *
+     * @var \Aggressiveswallow\Tools\Session 
+     */
     protected $session;
 
     public function __construct() {

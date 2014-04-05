@@ -15,12 +15,23 @@ class UserFactory
 
     public function create($data) {
         $user = new User();
-        $user->setId((int)$data["user_id"]);
+        $user->setId((int) $data["user_id"]);
         $user->setName($data["user_name"]);
         $user->setPasshash($data["user_passhash"]);
         $user->setSalt($data["user_salt"]);
-        $user->setIsAdmin($data["user_isadmin"]);
-        
+
+        return $user;
+    }
+
+    public function createFromUserAndPass($username, $password) {
+        $user = new User();
+        $user->setName($username);
+        \mt_srand(\microtime() + $username + $password);
+        $salt = \mt_rand(0, \mt_getrandmax());
+        var_dump($salt);
+        $user->setSalt($salt);
+        $user->setPassword($password);
+
         return $user;
     }
 

@@ -39,7 +39,7 @@ class User
 
     public function hasPassword($password) {
         $thisHash = $this->getPassHashForPassword($password);
-        
+
         return strtolower($thisHash) == strtolower($this->passhash);
     }
 
@@ -50,4 +50,9 @@ class User
     public function setSalt($salt) {
         $this->salt = $salt;
     }
+
+    public function setPassword($password) {
+        $this->passhash = $this->getPassHashForPassword($password);
+    }
+
 }

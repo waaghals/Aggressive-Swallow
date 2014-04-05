@@ -11,6 +11,7 @@ use Aggressiveswallow\Tools\Template;
 use Aggressiveswallow\Tools\Responses\ErrorResponse;
 use Aggressiveswallow\Models\Order;
 use Aggressiveswallow\Models\User;
+use Aggressiveswallow\Helpers\LoginHelper as Login;
 
 /**
  * Simple cart controller for adding and removing products from the cart
@@ -30,7 +31,7 @@ class CheckoutController
         parent::__construct();
         $this->initCart();
     }
-    
+
     public function paymentAction() {
         $t = new Template("cartViews/payment");
         $t->cart = $this->cart;
@@ -38,8 +39,16 @@ class CheckoutController
     }
 
     public function confirmAction() {
+        if (!Login::isLoggedIn()) {
+            return new ErrorResponse("U bent niet ingelogd, voor deze pagina dient u ingelogd te zijn.");
+        }
+        
         if ($this->cart->isEmpty()) {
             return new ErrorResponse("De winkelwagen is leeg, dus er valt niets te kopen.");
+        }
+
+        if (!isset($_POST)) {
+            return new ErrorResponse("Er zijn geen telefoon nummer en IBAN ontvangen.");
         }
 
         $order = new Order();
@@ -50,11 +59,9 @@ class CheckoutController
             $location->setOrder($order);
             $order->addLocation($location);
         }
-        $testUser = new User();
-        $testUser->setId(1);
-        $testUser->setName("Patrick");
-        $testUser->setSalt("fdgsFtfRD45DSe#S%\$ÎFGVHJVSsdfgd");
-        $order->setUser($testUser);
+
+        $user = $this->session->user;
+        $order->setUser($user);
 
         $orderRepo = Container::make("orderRepository");
         /* @var $orderRepo \Aggressiveswallow\Repositories\OrderRepository */
@@ -64,7 +71,7 @@ class CheckoutController
         $t = new Template("cartViews/success");
         $t->cart = clone $this->cart;
         $this->cart->destroy();
-        
+
         return new Response($t);
     }
 

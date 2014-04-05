@@ -43,10 +43,15 @@ class LocationController
 
         $breadcrumsQuery = Container::make("breadcrumsQuery");
         $breadcrumsQuery->setMenuItem($location->getMenuItem());
+        $breadcrums = $repository->read($breadcrumsQuery);
+        $lastBreadcrum = new MenuItem();
+        $lastBreadcrum->setName($location->getAddress()->getFullStreetName());
+        $lastBreadcrum->setUri(sprintf("/location/show/locationId=%s/#", $locationId));
+        $breadcrums[] = $lastBreadcrum;
 
         $t = new Template("locationViews/showLocation");
         $t->location = $location;
-        $t->breadcrums = $repository->read($breadcrumsQuery);
+        $t->breadcrums = $breadcrums;
         $t->pagetitle = $location->getAddress()->getFullStreetName();
         $t->cart = $this->session->cart;
 

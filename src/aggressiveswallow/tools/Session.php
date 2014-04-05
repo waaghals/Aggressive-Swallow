@@ -24,7 +24,7 @@ class Session {
      * @return \Aggressiveswallow\Tools\Session
      */
     public function start() {
-        session_start();
+        \session_start();
         return $this;
     }
 
@@ -77,7 +77,7 @@ class Session {
         $this->checkStarted();
         
         $_SESSION = array();
-        session_destroy();
+        \session_destroy();
         return $this;
     }
 
@@ -117,7 +117,7 @@ class Session {
      * @return boolean True if the session is started/active
      */
     public function isStarted() {
-       return session_status() == PHP_SESSION_ACTIVE;
+       return \session_status() == \PHP_SESSION_ACTIVE;
     }
     
     /**
