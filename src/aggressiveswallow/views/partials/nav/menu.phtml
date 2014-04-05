@@ -2,6 +2,7 @@
 
 use Aggressiveswallow\Tools\Container;
 use Aggressiveswallow\Helpers\Cart;
+use Aggressiveswallow\Helpers\LoginHelper as Login;
 ?>
 <div class = "collapse navbar-collapse">
     <ul class = "nav navbar-nav">
@@ -66,21 +67,20 @@ use Aggressiveswallow\Helpers\Cart;
         </li>
     </ul>
 
-    <?php
-    $itemCount = "Leeg";
-    $sess = Container::make("session");
-
-    // Set the cwd to the basepath again.
-    // Else the autoloader tries to load from the wrong location.
-    chdir(BASE_PATH);
-    $cart_name = Cart::SESSION_NAME;
-    if ($sess->has($cart_name)):
-        $count = $sess->$cart_name->itemCount();
-        if ($count > 0):
-            $itemCount = $count;
+    <p class="navbar-text navbar-right">
+        <span class="glyphicon glyphicon-user"></span> 
+        <?php
+        chdir(BASE_PATH);
+        if (Login::isLoggedIn()):
+            $user = Login::getLoggedInUser();
+            printf("Welkom %s <a href=\"/account/logout/\" class=\"navbar-link\">Uitloggen</a>", $user->getName());
+        else:
+            echo "<a href=\"/account/login/\" class=\"navbar-link\">Inloggen</a> :: ";
+            echo "<a href=\"/account/register/\" class=\"navbar-link\">Registreren</a>";
         endif;
-    endif;
-    ?>
+        ?>
+
+    </p>
     <p class="navbar-text navbar-right">
         <span class="glyphicon glyphicon-shopping-cart"></span> 
         <?php
@@ -101,7 +101,7 @@ use Aggressiveswallow\Helpers\Cart;
             endif;
         endif;
         ?>
-        
+
     </p>
 </div>
 <!-- /.navbar-collapse -->

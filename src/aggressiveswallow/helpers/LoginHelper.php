@@ -26,6 +26,9 @@ class LoginHelper {
 
     public static function getLoggedInUser() {
         if (static::isLoggedIn()) {
+            $sess = Container::make("session");
+            /* @var $sess \Aggressiveswallow\Tools\Session */
+            
             return $sess->user;
         }
 

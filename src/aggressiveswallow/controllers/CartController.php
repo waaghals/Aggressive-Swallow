@@ -42,12 +42,11 @@ class CartController
         parent::__construct();
         $this->repo = Container::make("genericRepository");
         $this->locationQuery = Container::make("singleLocationQuery");
-        $this->initCart();
     }
 
     public function showAction() {
         $t = new Template("cartViews/overview");
-        $t->cart = $this->cart;
+        $t->cart = $this->session->cart;
 
         return new Response($t);
     }
@@ -55,14 +54,14 @@ class CartController
     public function addAction($locationId) {
         $responseObj = new CartMessage();
         $location = $this->getLocation($locationId);
-        if ($this->cart->has($location)) {
+        if ($this->session->cart->has($location)) {
             $responseObj->setHasError(true);
             $responseObj->setMessage("U heeft dit item al in de winkelwagen.");
 
             return new JsonResponse($responseObj);
         }
 
-        $this->cart->add($location);
+        $this->session->cart->add($location);
         $m = "%s is toegevoegd aan uw reacties.";
         $responseObj->setMessage(\sprintf($m, $location->getAddress()->getFullStreetName()));
 
@@ -72,26 +71,16 @@ class CartController
     public function removeAction($locationId) {
         $responseObj = new CartMessage();
         $location = $this->getLocation($locationId);
-        if (!$this->cart->has($location)) {
+        if (!$this->session->cart->has($location)) {
             $responseObj->setHasError(true);
             $responseObj->setMessage("Het product om te verwijderen bestaat is niet in uw winkelwagen.");
             return new JsonResponse($responseObj);
         }
 
-        $this->cart->remove($location);
+        $this->session->cart->remove($location);
         $m = "%s is verwijderd uit uw reactie lijst.";
         $responseObj->setMessage(sprintf($m, $location->getAddress()->getFullStreetName()));
         return new JsonResponse($responseObj);
-    }
-    
-    private function initCart() {
-        $cart_name = Cart::SESSION_NAME;
-
-        if (!$this->session->has($cart_name)) {
-            $this->session->$cart_name = Container::make("cart");
-        }
-
-        $this->cart = $this->session->$cart_name;
     }
 
     private function getLocation($locationId) {

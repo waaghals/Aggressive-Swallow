@@ -5,6 +5,7 @@ namespace Aggressiveswallow\Controllers;
 use Aggressiveswallow\Tools\Container;
 use Aggressiveswallow\Tools\Responses\ErrorResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Aggressiveswallow\Helpers\Cart;
 
 /**
  * Description of baseController
@@ -21,6 +22,7 @@ abstract class BaseController {
 
     public function __construct() {
         $this->session = Container::make("session");
+        $this->initCart();
     }
 
     /**
@@ -58,6 +60,14 @@ abstract class BaseController {
         }
 
         return $actionResponse;
+    }
+    
+    private function initCart() {
+        $cart_name = Cart::SESSION_NAME;
+
+        if (!$this->session->has($cart_name)) {
+            $this->session->$cart_name = Container::make("cart");
+        }
     }
 
 }
