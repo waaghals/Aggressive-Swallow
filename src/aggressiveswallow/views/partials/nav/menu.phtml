@@ -67,41 +67,37 @@ use Aggressiveswallow\Helpers\LoginHelper as Login;
         </li>
     </ul>
 
-    <p class="navbar-text navbar-right">
-        <span class="glyphicon glyphicon-user"></span> 
-        <?php
-        chdir(BASE_PATH);
-        if (Login::isLoggedIn()):
+    <?php
+    chdir(BASE_PATH);
+    $sess = Container::make("session");
+    $cartText = "Leeg";
+    $cart_name = Cart::SESSION_NAME;
+    if ($sess->has($cart_name)):
+        $count = $sess->$cart_name->itemCount();
+        if ($count > 0):
+            $cartText = sprintf(($count == 1 ? " %s item" : "%s items"), $count);
+
+        endif;
+    endif;
+    ?>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="/cart/show/"><span class="glyphicon glyphicon-shopping-cart"></span><?php echo $cartText; ?></a></li>
+        <li class="dropdown">
+            <?php
             $user = Login::getLoggedInUser();
-            printf("Welkom %s <a href=\"/account/logout/\" class=\"navbar-link\">Uitloggen</a>", $user->getName());
-        else:
-            echo "<a href=\"/account/login/\" class=\"navbar-link\">Inloggen</a> :: ";
-            echo "<a href=\"/account/register/\" class=\"navbar-link\">Registreren</a>";
-        endif;
-        ?>
+            $text = (Login::isLoggedIn()) ? $user->getName() : "Niet ingelogd";
+            ?>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?php echo $text; ?> <b class="caret"></b></a>
 
-    </p>
-    <p class="navbar-text navbar-right">
-        <span class="glyphicon glyphicon-shopping-cart"></span> 
-        <?php
-        $itemCount = "Leeg";
-        $sess = Container::make("session");
-
-        // Set the cwd to the basepath again.
-        // Else the autoloader tries to load from the wrong location.
-        chdir(BASE_PATH);
-        $cart_name = Cart::SESSION_NAME;
-        if ($sess->has($cart_name)):
-            $count = $sess->$cart_name->itemCount();
-            if ($count > 0):
-                $text = sprintf(($count == 1 ? " %s item" : "%s items"), $count);
-                echo sprintf("<a href=\"/cart/show/\" class=\"navbar-link\">%s</a>", $text);
-            else:
-                echo "Leeg";
-            endif;
-        endif;
-        ?>
-
-    </p>
+            <ul class="dropdown-menu">
+                <?php if (!Login::isLoggedIn()): ?>
+                    <li><a href="/account/login">Inloggen</a></li>
+                    <li><a href="/account/register">Registreren</a></li>
+                <?php else: ?>
+                    <li><a href="/account/logout">Uitloggen</a></li>
+                <?php endif; ?>
+            </ul>
+        </li>
+    </ul>
 </div>
 <!-- /.navbar-collapse -->

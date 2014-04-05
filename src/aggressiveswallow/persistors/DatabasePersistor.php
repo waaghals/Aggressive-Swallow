@@ -101,7 +101,6 @@ class DatabasePersistor
         $sql .= " VALUES (:" . implode(", :", $fields) . ");";
 
         $stmt = $this->connection->prepare($sql);
-        var_dump($sql);
         $stmt->execute($data);
     }
 
@@ -123,7 +122,6 @@ class DatabasePersistor
         $sql .= " WHERE `id` = :id";
 
         $stmt = $this->connection->prepare($sql);
-        var_dump($sql);
         $stmt->execute($this->entityData);
     }
 

@@ -28,7 +28,6 @@ class UserFactory
         $user->setName($username);
         \mt_srand(\microtime() + $username + $password);
         $salt = \mt_rand(0, \mt_getrandmax());
-        var_dump($salt);
         $user->setSalt($salt);
         $user->setPassword($password);
 
