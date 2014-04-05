@@ -42,7 +42,13 @@ class AccountController
                 $user = $userFactory->createFromUserAndPass($_POST["username"], $_POST["password"]);
                 $repo->create($user);
 
-                return new Response("Registration successfull", Response::HTTP_CREATED);
+                $t = new Template("common\message");
+                $t->pageTitle = "Registreren gelukt";
+                $t->title = "Registreren";
+                $t->shortMessage = "gelukt";
+                $t->description = "U bent met success geregistreerd.";
+                $t->class = "success";
+                return new Response($t, Response::HTTP_CREATED);
             }
         }
         return $this->showRegistrationForm();
@@ -55,7 +61,13 @@ class AccountController
             $this->session->isLoggedIn = true;
             $this->session->regenerateId();
 
-            return new Response("Login successfull", Response::HTTP_ACCEPTED);
+            $t = new Template("common\message");
+            $t->pageTitle = "Inlogd";
+            $t->title = "Inloggen";
+            $t->shortMessage = "gelukt";
+            $t->description = "U bent met success ingelogd.";
+            $t->class = "success";
+            return new Response($t, Response::HTTP_OK);
         } elseif (isset($_POST["submit"])) {
             $this->error = "Gebruikersnaam of wachtwoord is verkeerd.";
         }
@@ -66,7 +78,15 @@ class AccountController
     public function logoutAction() {
         $this->session->isLoggedin = false;
         $this->session->destroy();
-        return new Response("Logout successfull", Response::HTTP_ACCEPTED);
+        $this->session->start();
+        
+        $t = new Template("common\message");
+        $t->pageTitle = "Uitgelogd";
+        $t->title = "Uitloggen";
+        $t->shortMessage = "gelukt";
+        $t->description = "U bent met success uitgelogd.";
+        $t->class = "success";
+        return new Response($t, Response::HTTP_OK);
     }
 
     private function showRegistrationForm() {
