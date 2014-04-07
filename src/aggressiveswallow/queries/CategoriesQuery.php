@@ -2,14 +2,14 @@
 
 namespace Aggressiveswallow\Queries;
 
-use Aggressiveswallow\Factories\NavItemFactory;
+use Aggressiveswallow\Factories\MenuItemFactory;
 
 /**
  * Get the full navigation tree
  *
  * @author Patrick
  */
-class FullNavigationQuery
+class CategoriesQuery
         extends BaseQuery {
 
     /**
@@ -18,7 +18,7 @@ class FullNavigationQuery
      */
     private $factory;
 
-    public function __construct(\PDO $connection, NavItemFactory $factory) {
+    public function __construct(\PDO $connection, MenuItemFactory $factory) {
         parent::__construct($connection);
         $this->factory = $factory;
     }
@@ -31,7 +31,12 @@ class FullNavigationQuery
 
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        return $this->factory->create($rows);
+        $categories = array();
+        foreach($rows as $row){
+            $categories[] = $this->factory->create($row);
+        }
+        
+        return $categories;
     }
 
 }

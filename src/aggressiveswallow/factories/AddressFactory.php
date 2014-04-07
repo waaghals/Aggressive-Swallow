@@ -15,7 +15,10 @@ class AddressFactory
 
     public function create($data) {
         $address = new Address();
-        $address->setId(intval($data["address_id"]));
+        if(isset($data["address_id"])){
+            $address->setId(intval($data["address_id"]));
+        }
+
         $address->setStreet($data["address_street"]);
         $address->setCity($data["address_city"]);
         $address->setZipcode($data["address_zipcode"]);

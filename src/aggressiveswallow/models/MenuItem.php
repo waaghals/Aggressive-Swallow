@@ -28,6 +28,13 @@ class MenuItem
      */
     private $tree;
 
+    /**
+     *
+     * @var int
+     * @virtual
+     */
+    private $depth;
+
     public function getName() {
         return $this->name;
     }
@@ -73,6 +80,22 @@ class MenuItem
             throw new \Exception("Not a valid URI was set. Menu uri should always be the full path.");
         }
         $this->uri = $uri;
+    }
+
+    /**
+     * 
+     * @return int
+     */
+    public function getDepth() {
+        return (int) $this->depth;
+    }
+
+    /**
+     * 
+     * @param int $depth
+     */
+    public function setDepth($depth) {
+        $this->depth = $depth;
     }
 
 }

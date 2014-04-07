@@ -2,19 +2,6 @@
 use Aggressiveswallow\Helpers\buttonHelper as Button;
 /* @var $location \Aggressiveswallow\Models\Location */
 
-function getLabel($l) {
-    $span = "<span class=\"label label-%s\">%s</span>";
-    switch ($l) {
-        case "a":
-            return sprintf($span, "success", "A");
-        case "b":
-            return sprintf($span, "info", "B");
-        case "c":
-            return sprintf($span, "warning", "C");
-        case "d":
-            return sprintf($span, "danger", "D");
-    }
-}
 include VIEW_PATH . "partials/header.phtml";
 ?>
 <div class="row">
@@ -66,7 +53,7 @@ include VIEW_PATH . "partials/header.phtml";
                     <strong>
                         Energielabel: 
                     </strong>
-                    <?php echo getLabel($location->getEnergyLabel()); ?>
+                    <?php echo Button::energyLabel($location->getEnergyLabel()); ?>
                 </p>
                 <p>
                     <strong>
@@ -148,5 +135,5 @@ include VIEW_PATH . "partials/header.phtml";
 </div>
 <?php
 $bottomJs[] = file_get_contents(VIEW_PATH . "locationViews/openFirstTab.js");
-$bottomJs[] = file_get_contents(VIEW_PATH . "commonScripts/ajaxReload.js");
+$bottomJs[] = file_get_contents(VIEW_PATH . "common/ajaxReload.js");
 include VIEW_PATH . "partials/footer.phtml";

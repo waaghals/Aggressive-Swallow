@@ -20,6 +20,10 @@ class MenuItemFactory
         $menuItem->setId(intval($data["menuitem_id"]));
         $menuItem->setName($data["menuitem_name"]);
         $menuItem->setUri($data["menuitem_uri"]);
+        
+        if(isset($data["depth"])){
+            $menuItem->setDepth($data["depth"]);
+        }
 
         if (isset($data['tree_id'])) {
             $tree = new Tree();

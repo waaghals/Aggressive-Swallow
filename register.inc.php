@@ -16,6 +16,7 @@ use Aggressiveswallow\Queries\UserByNameQuery;
 use Aggressiveswallow\Tools\Session;
 use Aggressiveswallow\Helpers\Cart;
 use Aggressiveswallow\Repositories\OrderRepository;
+use Aggressiveswallow\Queries\CategoriesQuery;
 
 // Register the objects
 Container::registerSingleton("db", function() {
@@ -47,6 +48,12 @@ Container::register("navQuery", function() {
     $db = Container::make("db");
     $niv = Container::make("navItemFactory");
     return new FullNavigationQuery($db, $niv);
+});
+
+Container::register("menuItemDropdownQuery", function() {
+    $db = Container::make("db");
+    $miv = Container::make("menuItemFactory");
+    return new CategoriesQuery($db, $miv);
 });
 
 Container::register("addressFactory", function() {

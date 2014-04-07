@@ -23,4 +23,18 @@ class buttonHelper {
         return \sprintf($button, $uri, "", "<span class=\"glyphicon glyphicon-shopping-cart\"></span> Kopen");
     }
 
+    public static function energyLabel($l) {
+        $span = "<span class=\"label label-%s\">%s</span>";
+        switch ($l) {
+            case "a":
+                return sprintf($span, "success", "A");
+            case "b":
+                return sprintf($span, "info", "B");
+            case "c":
+                return sprintf($span, "warning", "C");
+            case "d":
+                return sprintf($span, "danger", "D");
+        }
+    }
+
 }

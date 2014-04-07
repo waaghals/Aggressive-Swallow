@@ -63,10 +63,9 @@ class GenericRepository
                 $this->objReflector = new \ReflectionObject($object);
 
                 $bindData[$fieldName . "_id"] = $fieldValue->getId();
-            } elseif (!is_null($fieldValue)){
+            } elseif (!is_null($fieldValue)) {
                 // Do update/store empty fields, let the persistance layer
                 // deside what to user.
- 
                 // Just a plain type
                 $bindData[$fieldName] = $fieldValue;
             }
@@ -124,13 +123,12 @@ class GenericRepository
     private function isVirtualProperty($property) {
         $phpDoc = new \phpDocumentor\Reflection\DocBlock($property);
 
-        if ($property->getName() == "locations") {
-            foreach ($phpDoc->getTags() as $tag) {
-                if($tag->getName() === "virtual"){
-                    return true;
-                }
+        foreach ($phpDoc->getTags() as $tag) {
+            if ($tag->getName() === "virtual") {
+                return true;
             }
         }
+
 
         return false;
     }

@@ -34,7 +34,9 @@ class LocationFactory
     public function create($data) {
 
         $location = new Location();
-        $location->setId(intval($data["location_id"]));
+        if(isset($data["location_id"])){
+            $location->setId(intval($data["location_id"]));
+        }
         $location->setPrice($data["location_price"]);
         $location->setDescription($data["location_description"]);
         $location->setArea($data["location_area"]);
