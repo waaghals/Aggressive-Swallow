@@ -3,20 +3,56 @@
 use Aggressiveswallow\Tools\Container;
 use Aggressiveswallow\Helpers\Cart;
 use Aggressiveswallow\Helpers\LoginHelper as Login;
+
+function generateMenu() {
+
+    $nav = Aggressiveswallow\Tools\Container::make("navigation");
+    foreach ($nav as $navItem):
+        generateLink($navItem);
+    endforeach;
+}
+
+function generateLink($navItem) {
+    $regularLink = "<li><a href=\"%s\">%s</a></li>";
+    $menuLink = "<a href=\"%s\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">%s <b class=\"caret\"></b></a>";
+    /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
+    if ($navItem->hasChildren()) {
+        echo "<li class='dropdown'>";
+        echo sprintf($menuLink, $navItem->getUri(), $navItem->getName())."categoriëen";
+        echo "<ul class='dropdown-menu'>";
+        foreach ($navItem->getChildren() as $childItem):
+            generateChild($childItem);
+        endforeach;
+        echo "</ul>";
+    }else {
+        echo sprintf($regularLink, $navItem->getUri(), $navItem->getName())."home";
+    }
+    echo "</li>";
+}
+
+function generateChild($navItem) {
+    $regularLink = "<li><a href=\"%s\">%s</a></li>";
+    /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
+    if ($navItem->hasChildren()) {
+        echo "<li class='dropdown-submenu'>";
+        echo sprintf($regularLink, $navItem->getUri(), $navItem->getName())."huizen";
+        echo "<ul class='dropdown-menu'>";
+        foreach ($navItem->getChildren() as $childItem):
+            generateChild($childItem);
+        endforeach;
+        echo "</ul>";
+    }else {
+        echo sprintf($regularLink, $navItem->getUri(), $navItem->getName())."kamer";
+    }
+    echo "</li>";
+}
 ?>
+
+
 <div class = "collapse navbar-collapse">
     <ul class = "nav navbar-nav">
         <?php
-        $regularLink = "<li><a href=\"%s\">%s</a></li>";
-        $nav = Container::make("navigation");
-        foreach ($nav as $navItem):
-            /* @var $navItem \Aggressiveswallow\Helpers\NavItem */
-            if ($navItem->hasChildren()):
-                include "dropdown.phtml";
-            else:
-                echo sprintf($regularLink, $navItem->getUri(), $navItem->getName());
-            endif;
-        endforeach;
+        generateMenu();
         ?>
     </ul>
     <ul class="nav navbar-nav">
@@ -25,23 +61,28 @@ use Aggressiveswallow\Helpers\LoginHelper as Login;
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Multi Level <b class="caret"></b></a>
             <ul class="dropdown-menu">
+                
                 <li><a href="#">Level 1</a></li>
+                
                 <li class="dropdown-submenu"> <a tabindex="-1" href="#">More options</a>
                     <ul class="dropdown-menu">
-                        <li><a tabindex="-1" href="#">Level 2</a>
-                        </li>
+                        
+                        <li><a href="#">Level 2</a></li>
+                        
                         <li class="dropdown-submenu"> <a href="#">More..</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Level 3</a>
-                                </li>
-                                <li><a href="#">Level 3</a>
-                                </li>
+                                
+                                <li><a href="#">Level 3</a></li>
+                                
+                                <li><a href="#">Level 3</a></li>
+                                
                                 <li class="dropdown-submenu"> <a href="#">More..</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Level 4</a>
-                                        </li>
-                                        <li><a href="#">Level 4</a>
-                                        </li>
+                                        
+                                        <li><a href="#">Level 4</a></li>
+                                        
+                                        <li><a href="#">Level 4</a></li>
+                                        
                                         <li class="dropdown-submenu"> <a href="#">More..</a>
                                             <ul class="dropdown-menu">
                                                 <li><a href="#">Level 5</a>
@@ -62,6 +103,7 @@ use Aggressiveswallow\Helpers\LoginHelper as Login;
                         </li>
                     </ul>
                 </li>
+                
                 <li><a href="#">Level 1</a></li>
             </ul>
         </li>
