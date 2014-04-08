@@ -56,6 +56,12 @@ class Location
     private $order;
 
     /**
+     *
+     * @var string
+     */
+    private $foto;
+
+    /**
      * 
      * @return Aggressiveswallow\Models\MenuItem
      */
@@ -89,6 +95,14 @@ class Location
 
     public function getEnergyLabel() {
         return $this->energyLabel;
+    }
+
+    public function getFoto() {
+        return $this->foto;
+    }
+
+    public function setFoto($foto) {
+        $this->foto = $foto;
     }
 
     public function setEnergyLabel($energyLabel) {

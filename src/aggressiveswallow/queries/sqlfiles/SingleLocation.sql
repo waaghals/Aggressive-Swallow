@@ -5,6 +5,7 @@ SELECT `l`.`id`             AS `location_id`
        , `l`.`yardarea`     AS `location_yardarea` 
        , `l`.`newbuild`     AS `location_newbuild` 
        , `l`.`energylabel`  AS `location_energylabel` 
+       , `l`.`foto`         AS `location_foto` 
        , `a`.`id`           AS `address_id` 
        , `a`.`street`       AS `address_street` 
        , `a`.`housenumber`  AS `address_housenumber` 

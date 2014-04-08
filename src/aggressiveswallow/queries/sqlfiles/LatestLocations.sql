@@ -3,6 +3,7 @@ SELECT `l`.`id`             AS `location_id`
        , `l`.`description`  AS `location_description` 
        , `l`.`area`         AS `location_area` 
        , `l`.`yardarea`     AS `location_yardarea` 
+       , `l`.`foto`         AS `location_foto` 
        , `l`.`newbuild`     AS `location_newbuild` 
        , `l`.`energylabel`  AS `location_energylabel` 
        , `a`.`id`           AS `address_id` 

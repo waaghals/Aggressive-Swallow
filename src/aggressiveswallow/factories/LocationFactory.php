@@ -43,6 +43,7 @@ class LocationFactory
         $location->setEnergyLabel($data["location_energylabel"]);
         $location->setNewBuild($data["location_newbuild"]);
         $location->setYardArea($data["location_yardarea"]);
+        $location->setFoto($data["location_foto"]);
 
         if (isset($data["menuitem_id"])) {
             $menuItem = $this->mif->create($data);
